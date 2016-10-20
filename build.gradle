@@ -1,0 +1,136 @@
+import no.nils.xsd2java.Xsd2JavaTask
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'nebula.provided-base'
+//apply plugin: 'no.nils.xsd2java'
+
+group = 'mx.gob.seseqro'
+version = '0.0.1-SNAPSHOT'
+
+description = "cfdi-model"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+	repositories {
+		maven { url "http://10.22.1.1:8090/repository/internal/" }
+		maven { url "http://10.22.1.1:8090/repository/snapshots/" }
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath 'mx.gob.seseqro:xsd2java:0.0.9-SNAPSHOT'
+		classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3' 
+	}
+}
+
+repositories {
+	maven { url "http://10.22.1.1:8090/repository/internal/" }
+	maven { url "http://10.22.1.1:8090/repository/snapshots/" }
+}
+
+dependencies {
+	compile 'com.google.guava:guava:r06'
+	compile 'commons-codec:commons-codec:1.4'
+	compile 'ca.juliusdavies:not-yet-commons-ssl:0.3.11'
+	compile 'org.bouncycastle:bcprov-ext-jdk15:1.45'
+	compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.1'
+	compile 'com.sun.xml.bind:jaxb-xjc:2.1.12'
+	compile 'com.sun.xml.bind:jaxb-impl:2.1.12'
+	//compile 'javax.xml.bind:jaxb-api:2.2.7'
+
+	provided 'org.projectlombok:lombok:0.11.4'
+
+    testCompile 'junit:junit:4.8.1'
+   
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://10.22.1.1:8090/repository/internal/") {
+            	authentication(userName: 'raulrt', password: 'Pas$word89')
+            }
+            pom.version = '0.0.1'
+            pom.artifactId = 'cfdi-model'
+            pom.groupId = 'mx.gob.seseqro'
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'mx.gob.seseqro'
+            artifactId 'cfdi-model'
+            version '0.0.1'
+
+            from components.java
+            /*
+            artifact sourcesJar {
+            	classifier: 'sources'
+            }*/
+        }
+    }
+}
+/*
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+*/
+eclipse {
+	project {
+		name = 'cfdi-model'
+	}
+}
+
+task JaxbCFDiSchemas(type: Xsd2JavaTask) {
+	generatedXsdDir = file("build/generated-sources/jaxb-xjc-cfdi")
+	xsdsToGenerate = [ 
+						[ 'src/main/resources/xsd/v2/cfdv2.xsd', 'mx.gob.sat.cfd._2' ],
+						[ 'src/main/resources/xsd/v22/cfdv22.xsd', 'mx.gob.sat.cfd._22' ],
+						[ 'src/main/resources/xsd/v3/cfdv3.xsd', 'mx.gob.sat.cfd._3' ],
+						[ 'src/main/resources/xsd/v32/cfdv32.xsd', 'mx.gob.sat.cfd._32' ],
+						[ 'src/main/resources/xsd/v32/TimbreFiscalDigital.xsd', 'mx.gob.sat.cfd.timbrefiscaldigital' ],
+						[ 'src/main/resources/xsd/common/donat/donat11.xsd', 'mx.gob.sat.donat'],
+						[ 'src/main/resources/xsd/common/ecb/ecb.xsd', 'mx.gob.sat.ecb'],
+						[ 'src/main/resources/xsd/common/ecc/ecc.xsd', 'mx.gob.sat.ecc'],
+						[ 'src/main/resources/xsd/common/iedu/iedu.xsd', 'mx.gob.sat.iedu'],
+						[ 'src/main/resources/xsd/common/implocal/implocal.xsd', 'mx.gob.sat.implocal'],
+						[ 'src/main/resources/xsd/common/leyendasFisc/leyendasFisc.xsd', 'mx.gob.sat.leyendasFisc'],
+						[ 'src/main/resources/xsd/common/nomina/nomina11.xsd', 'mx.gob.sat.nomina'],
+						[ 'src/main/resources/xsd/common/pfic/pfic.xsd', 'mx.gob.sat.pfic'],
+						[ 'src/main/resources/xsd/common/psgcfdsp/psgcfdsp.xsd', 'mx.gob.sat.psgcfdps'],
+						[ 'src/main/resources/xsd/common/psgecfd/psgecfd.xsd', 'mx.gob.sat.psgecfd'],
+						[ 'src/main/resources/xsd/common/terceros/terceros11.xsd', 'mx.gob.sat.terceros'],
+						[ 'src/main/resources/xsd/common/TuristaPasajeroExtranjero/TuristaPasajeroExtranjero.xsd', 'mx.gob.sat.turistaExt'],
+						[ 'src/main/resources/xsd/common/ventavehiculos/ventavehiculos.xsd', 'mx.gob.sat.ventavehiculos'],
+						[ 'src/main/resources/xsd/ce_balanza_comprobacion/BalanzaComprobacion_1_1.xsd', 'mx.gob.sat.ce_balanza_comprobacion'],
+						[ 'src/main/resources/xsd/ce_catalogo_cuentas/CatalogoCuentas_1_1.xsd', 'mx.gob.sat.ce_catalogo_cuentas'],
+						[ 'src/main/resources/xsd/ce_polizas_periodo/PolizasPeriodo_1_1.xsd', 'mx.gob.sat.ce_polizas_periodo'],	
+					]
+	classpath = project.configurations.maybeCreate('xsd2java')
+	taskClassname = 'org.jvnet.jaxb2_commons.xjc.XJC2Task'
+	headerSwitch = false
+	extensionSwitch = true
+	args = [ '-verbose' ]
+	project.dependencies {
+        	xsd2java "org.jvnet.jaxb2_commons:jaxb2-basics-ant:0.6.5"
+			xsd2java "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.4"
+			xsd2java "org.jvnet.jaxb2_commons:jaxb2-basics-annotate:0.6.4"
+			xsd2java 'com.sun.xml.bind:jaxb-xjc:2.2.7-b41'
+			xsd2java 'com.sun.xml.bind:jaxb-impl:2.2.7-b41'
+			xsd2java 'javax.xml.bind:jaxb-api:2.2.7'
+    }
+    project.sourceSets.main.java.srcDirs += project.JaxbCFDiSchemas.generatedXsdDir
+}
+
+compileJava.dependsOn(JaxbCFDiSchemas)

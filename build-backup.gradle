@@ -1,0 +1,124 @@
+import org.openrepose.gradle.plugins.jaxb.task.JaxbXjc
+import org.openrepose.gradle.plugins.jaxb.task.JaxbDependencyTree
+import com.google.inject.Guice
+import com.google.inject.Injector
+import org.openrepose.gradle.plugins.jaxb.guice.JaxbPluginModule
+import org.openrepose.gradle.plugins.jaxb.schema.guice.DocSlurperModule
+import org.openrepose.gradle.plugins.jaxb.factory.XsdDependencyTreeFactory
+import org.openrepose.gradle.plugins.jaxb.resolver.ExternalDependencyResolver
+import org.openrepose.gradle.plugins.jaxb.resolver.NamespaceResolver
+import org.openrepose.gradle.plugins.jaxb.schema.factory.DocumentFactory
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'nebula.provided-base'
+apply plugin: 'org.openrepose.gradle.plugins.jaxb'
+
+group = 'mx.gob.seseqro'
+version = '0.0.1-SNAPSHOT'
+
+description = "cfdi-model"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+	repositories {
+		maven { url "http://10.22.1.1:8090/repository/internal/" }
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath 'mx.gob.seseqro:xsd2java:0.0.1'
+		classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3' 
+	}
+}
+
+repositories {
+	maven { url "http://10.22.1.1:8090/repository/internal/" }
+}
+
+dependencies {
+	compile 'com.google.guava:guava:r06'
+	compile 'commons-codec:commons-codec:1.4'
+	compile 'ca.juliusdavies:not-yet-commons-ssl:0.3.11'
+	compile 'org.bouncycastle:bcprov-ext-jdk15:1.45'
+	compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.1'
+	//compile 'com.sun.xml.bind:jaxb-xjc:2.2.7-b41'
+	//compile 'com.sun.xml.bind:jaxb-impl:2.2.7-b41'
+	//compile 'javax.xml.bind:jaxb-api:2.2.7'
+
+	provided 'org.projectlombok:lombok:0.11.4'
+
+    testCompile 'junit:junit:4.8.1'
+    
+	jaxb "org.jvnet.jaxb2_commons:jaxb2-basics-ant:0.6.5"
+	jaxb "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.4"
+	jaxb "org.jvnet.jaxb2_commons:jaxb2-basics-annotate:0.6.4"
+	jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.7-b41'
+	jaxb 'com.sun.xml.bind:jaxb-impl:2.2.7-b41'
+	jaxb 'javax.xml.bind:jaxb-api:2.2.7'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'mx.org.seseqrp'
+            artifactId 'cfdi-model'
+            version '0.0.1-SNAPSHOT'
+
+            from components.java
+        }
+    }
+    
+}
+
+eclipse {
+	project {
+		name = 'cfdi-model'
+	}
+}
+
+/*
+task treeDep(type: JaxbDependencyTree) {
+	project.jaxb.xsdDir = "src/main/resources/xsd/v2"
+	project.jaxb.episodesDir = "schema/episode"
+	project.jaxb.bindingsDir = "schema/bindings"
+	project.jaxb.bindings = [] 
+
+	Injector injector = Guice.createInjector([new JaxbPluginModule(), new DocSlurperModule()])
+	xsds = fileTree(dir: new File(project.rootDir, project.jaxb.xsdDir), include: '*.xsd')
+	docFactory = injector.getInstance(DocumentFactory.class)
+	namespaceResolver = injector.getInstance(NamespaceResolver.class)
+	externalDependencyResolver = injector.getInstance(ExternalDependencyResolver.class)
+	dependencyTreeFactory = injector.getInstance(XsdDependencyTreeFactory.class)
+}
+
+task JaxbCFDiV2(type: JaxbXjc, dependsOn: treeDep ) {
+	project.jaxb.xjc.taskClassname = "org.jvnet.jaxb2_commons.xjc.XJC2Task"
+	project.jaxb.xjc.destinationDir = "build/generated-sources/CFDv2"
+	project.jaxb.xjc.generatePackage = "mx.bigdata.sat.cfd.schema"
+	project.jaxb.xjc.extension = true
+	project.jaxb.xjc.removeOldOutput = 'yes'
+	project.jaxb.xjc.header = false
+	
+	manager = project.jaxb.dependencyGraph
+	xsds = fileTree(dir: new File(project.rootDir, project.jaxb.xsdDir), include: '*.xsd')
+	episodeDirectory = new File(project.rootDir, project.jaxb.episodesDir)
+	bindings = project.jaxb.bindings.isEmpty() ? project.files() : project.fileTree(dir:new File(project.rootDir, project.jaxb.bindingsDir), include: project.jaxb.bindings)
+	schemasDirectory = new File(project.rootDir, project.jaxb.xsdDir)
+	generatedFilesDirectory = new File(project.projectDir, project.jaxb.xjc.destinationDir)
+}
+
+
+jaxb {
+	xsdDir = "src/main/resources/xsd"
+	xjc {
+		taskClassname      = "org.jvnet.jaxb2_commons.xjc.XJC2Task"
+		generatePackage = "mx.bigdata.sat.cfd.schema"
+		destinationDir = "build/generated-sources/jaxb"
+	}
+}
+*/
+

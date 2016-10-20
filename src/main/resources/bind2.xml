@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           jaxb:version="2.0">
+   <jxb:bindings >
+       <jxb:globalBindings typesafeEnumMaxMembers="2000"/>
+   </jxb:bindings>
+
+    <jxb:bindings schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/CatalogosParaEsqContE/CatalogosParaEsqContE.xsd">
+            <jxb:bindings node="//xs:simpleType[@name='c_CodAgrup']">
+                <jxb:class name="c_CodAgrup"/>
+            </jxb:bindings>
+    </jxb:bindings>
+</jaxb:bindings>
