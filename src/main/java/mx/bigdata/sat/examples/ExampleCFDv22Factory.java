@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfd.examples;
+package mx.bigdata.sat.examples;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,29 +22,30 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import mx.gob.sat.cfd._2.Comprobante;
-import mx.gob.sat.cfd._2.Comprobante.Emisor;
-import mx.gob.sat.cfd._2.Comprobante.Receptor;
-import mx.gob.sat.cfd._2.Comprobante.Conceptos;
-import mx.gob.sat.cfd._2.Comprobante.Conceptos.Concepto;
-import mx.gob.sat.cfd._2.Comprobante.Impuestos;
-import mx.gob.sat.cfd._2.Comprobante.Impuestos.Traslados;
-import mx.gob.sat.cfd._2.Comprobante.Impuestos.Traslados.Traslado;
-import mx.gob.sat.cfd._2.ObjectFactory;
-import mx.gob.sat.cfd._2.TUbicacion;
-import mx.gob.sat.cfd._2.TUbicacionFiscal;
+import mx.gob.sat.cfd._22.Comprobante;
+import mx.gob.sat.cfd._22.ObjectFactory;
+import mx.gob.sat.cfd._22.TUbicacion;
+import mx.gob.sat.cfd._22.TUbicacionFiscal;
+import mx.gob.sat.cfd._22.Comprobante.Emisor;
+import mx.gob.sat.cfd._22.Comprobante.Emisor.RegimenFiscal;
+import mx.gob.sat.cfd._22.Comprobante.Receptor;
+import mx.gob.sat.cfd._22.Comprobante.Conceptos;
+import mx.gob.sat.cfd._22.Comprobante.Conceptos.Concepto;
+import mx.gob.sat.cfd._22.Comprobante.Impuestos;
+import mx.gob.sat.cfd._22.Comprobante.Impuestos.Traslados;
+import mx.gob.sat.cfd._22.Comprobante.Impuestos.Traslados.Traslado;
 
-public final class ExampleCFDFactory {
+public final class ExampleCFDv22Factory {
     
   public static Comprobante createComprobante() throws Exception {
-    return createComprobante(2010);
+    return createComprobante(2012);
   }
 
   public static Comprobante createComprobante(int year) throws Exception {
     ObjectFactory of = new ObjectFactory();
     Comprobante comp = of.createComprobante();
-    comp.setVersion("2.0");
-    Date date = new GregorianCalendar(year, 04, 03, 14, 11, 36).getTime();
+    comp.setVersion("2.2");
+    Date date = new GregorianCalendar(year, 4, 3, 14, 11, 36).getTime();
     comp.setFecha(date);
     comp.setSerie("ABCD");
     comp.setFolio("2");
@@ -55,6 +56,8 @@ public final class ExampleCFDFactory {
     comp.setTotal(new BigDecimal("2320.00"));
     comp.setDescuento(new BigDecimal("0.00"));
     comp.setTipoDeComprobante("ingreso");
+    comp.setMetodoDePago("efectivo");
+    comp.setLugarExpedicion("Mexico");
     comp.setEmisor(createEmisor(of));
     comp.setReceptor(createReceptor(of));
     comp.setConceptos(createConceptos(of));
@@ -76,7 +79,20 @@ public final class ExampleCFDFactory {
     uf.setNoExterior("6"); 
     uf.setNoInterior("6"); 
     uf.setPais("M\u00C9XICO"); 
-    emisor.setDomicilioFiscal(uf);
+    TUbicacion u = of.createTUbicacion();
+    u.setCalle("PRUEBA SEIS");
+    u.setCodigoPostal("72000");
+    u.setColonia("PUEBLA CENTRO"); 
+    u.setLocalidad("PUEBLA");  
+    u.setMunicipio("PUEBLA"); 
+    u.setEstado("PUEBLA"); 
+    u.setNoExterior("6"); 
+    u.setNoInterior("6"); 
+    u.setPais("M\u00C9XICO"); 
+    emisor.setExpedidoEn(u);
+    RegimenFiscal rf = of.createComprobanteEmisorRegimenFiscal();
+    rf.setRegimen("simplificado");
+    emisor.getRegimenFiscal().add(rf);
     return emisor;
   }
 

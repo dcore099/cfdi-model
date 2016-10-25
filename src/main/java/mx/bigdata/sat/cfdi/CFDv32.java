@@ -97,6 +97,8 @@ public final class CFDv32 implements CFDI {
       
   private final JAXBContext context;
 
+  public final static String DOC_TYPE = "cfdi:Comprobante";
+  
   public static final ImmutableMap<String, String> PREFIXES = 
     ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance","xsi", 
                     "http://www.sat.gob.mx/cfd/3", "cfdi", 

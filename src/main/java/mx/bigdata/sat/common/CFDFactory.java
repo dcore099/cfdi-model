@@ -24,15 +24,24 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public abstract class CFDFactory {
   
-  protected static String getVersion(byte[] data) throws Exception {
+  public static String getVersion(byte[] data) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(new ByteArrayInputStream(data));
     XPathFactory xfactory = XPathFactory.newInstance();
     XPath xpath = xfactory.newXPath();
     return (String) xpath.evaluate("/Comprobante/@version", doc);
+  }
+  
+  public static String getDocumentType(byte[] data) throws Exception {
+	  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	  DocumentBuilder builder = factory.newDocumentBuilder();
+	  Document doc = builder.parse(new ByteArrayInputStream(data));
+	  Element root = doc.getDocumentElement();
+	  return root.getTagName();
   }
 }

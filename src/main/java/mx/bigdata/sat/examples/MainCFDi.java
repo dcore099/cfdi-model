@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfdi.examples;
+package mx.bigdata.sat.examples;
 
 import java.io.FileInputStream;
 import java.security.PrivateKey;
@@ -25,10 +25,10 @@ import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.gob.sat.cfd._3.Comprobante;
 
-public final class Main {
+public final class MainCFDi {
     
   public static void main(String[] args) throws Exception {
-    CFDv3 cfd = new CFDv3(ExampleCFDFactory.createComprobante(), 
+    CFDv3 cfd = new CFDv3(ExampleCFDv3Factory.createComprobante(), 
                           "mx.bigdata.sat.cfdi.examples");
     cfd.addNamespace("http://www.bigdata.mx/cfdi/example", "example");
 

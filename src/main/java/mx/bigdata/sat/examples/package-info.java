@@ -17,7 +17,7 @@
 @XmlSchema( 
     namespace="http://www.bigdata.mx/cfdi/example", 
     elementFormDefault = XmlNsForm.QUALIFIED) 
-package mx.bigdata.sat.cfdi.examples;
+package mx.bigdata.sat.examples;
 
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

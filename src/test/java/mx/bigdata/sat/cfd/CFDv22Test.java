@@ -26,8 +26,7 @@ import java.io.FileInputStream;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
-import mx.bigdata.sat.cfd.examples.ExampleCFDv22Factory;
-
+import mx.bigdata.sat.examples.ExampleCFDv22Factory;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.gob.sat.cfd._22.Comprobante;

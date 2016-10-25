@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfd.examples;
+package mx.bigdata.sat.examples;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,30 +22,29 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import mx.gob.sat.cfd._22.Comprobante;
-import mx.gob.sat.cfd._22.ObjectFactory;
-import mx.gob.sat.cfd._22.TUbicacion;
-import mx.gob.sat.cfd._22.TUbicacionFiscal;
-import mx.gob.sat.cfd._22.Comprobante.Emisor;
-import mx.gob.sat.cfd._22.Comprobante.Emisor.RegimenFiscal;
-import mx.gob.sat.cfd._22.Comprobante.Receptor;
-import mx.gob.sat.cfd._22.Comprobante.Conceptos;
-import mx.gob.sat.cfd._22.Comprobante.Conceptos.Concepto;
-import mx.gob.sat.cfd._22.Comprobante.Impuestos;
-import mx.gob.sat.cfd._22.Comprobante.Impuestos.Traslados;
-import mx.gob.sat.cfd._22.Comprobante.Impuestos.Traslados.Traslado;
+import mx.gob.sat.cfd._2.Comprobante;
+import mx.gob.sat.cfd._2.Emisor;
+import mx.gob.sat.cfd._2.Receptor;
+import mx.gob.sat.cfd._2.Conceptos;
+import mx.gob.sat.cfd._2.Concepto;
+import mx.gob.sat.cfd._2.Impuestos;
+import mx.gob.sat.cfd._2.Traslados;
+import mx.gob.sat.cfd._2.Traslado;
+import mx.gob.sat.cfd._2.ObjectFactory;
+import mx.gob.sat.cfd._2.TUbicacion;
+import mx.gob.sat.cfd._2.TUbicacionFiscal;
 
-public final class ExampleCFDv22Factory {
+public final class ExampleCFDFactory {
     
   public static Comprobante createComprobante() throws Exception {
-    return createComprobante(2012);
+    return createComprobante(2010);
   }
 
   public static Comprobante createComprobante(int year) throws Exception {
     ObjectFactory of = new ObjectFactory();
     Comprobante comp = of.createComprobante();
-    comp.setVersion("2.2");
-    Date date = new GregorianCalendar(year, 4, 3, 14, 11, 36).getTime();
+    comp.setVersion("2.0");
+    Date date = new GregorianCalendar(year, 04, 03, 14, 11, 36).getTime();
     comp.setFecha(date);
     comp.setSerie("ABCD");
     comp.setFolio("2");
@@ -56,8 +55,6 @@ public final class ExampleCFDv22Factory {
     comp.setTotal(new BigDecimal("2320.00"));
     comp.setDescuento(new BigDecimal("0.00"));
     comp.setTipoDeComprobante("ingreso");
-    comp.setMetodoDePago("efectivo");
-    comp.setLugarExpedicion("Mexico");
     comp.setEmisor(createEmisor(of));
     comp.setReceptor(createReceptor(of));
     comp.setConceptos(createConceptos(of));
@@ -66,7 +63,7 @@ public final class ExampleCFDv22Factory {
   }
     
   private static Emisor createEmisor(ObjectFactory of) {
-    Emisor emisor = of.createComprobanteEmisor();
+    Emisor emisor = of.createEmisor();
     emisor.setNombre("CONTRIBUYENTE PRUEBASEIS PATERNOSEIS MATERNOSEIS");
     emisor.setRfc("PAMC660606ER9");
     TUbicacionFiscal uf = of.createTUbicacionFiscal();
@@ -79,25 +76,12 @@ public final class ExampleCFDv22Factory {
     uf.setNoExterior("6"); 
     uf.setNoInterior("6"); 
     uf.setPais("M\u00C9XICO"); 
-    TUbicacion u = of.createTUbicacion();
-    u.setCalle("PRUEBA SEIS");
-    u.setCodigoPostal("72000");
-    u.setColonia("PUEBLA CENTRO"); 
-    u.setLocalidad("PUEBLA");  
-    u.setMunicipio("PUEBLA"); 
-    u.setEstado("PUEBLA"); 
-    u.setNoExterior("6"); 
-    u.setNoInterior("6"); 
-    u.setPais("M\u00C9XICO"); 
-    emisor.setExpedidoEn(u);
-    RegimenFiscal rf = of.createComprobanteEmisorRegimenFiscal();
-    rf.setRegimen("simplificado");
-    emisor.getRegimenFiscal().add(rf);
+    emisor.setDomicilioFiscal(uf);
     return emisor;
   }
 
   private static Receptor createReceptor(ObjectFactory of) {
-    Receptor receptor = of.createComprobanteReceptor();
+    Receptor receptor = of.createReceptor();
     receptor.setNombre("ROSA MAR\u00CDA CALDER\u00D3N UIRIEGAS");
     receptor.setRfc("CAUR390312S87");
     TUbicacion uf = of.createTUbicacion();
@@ -112,9 +96,9 @@ public final class ExampleCFDv22Factory {
   }
 
   private static Conceptos createConceptos(ObjectFactory of) {
-    Conceptos cps = of.createComprobanteConceptos();
+    Conceptos cps = of.createConceptos();
     List<Concepto> list = cps.getConcepto(); 
-    Concepto c1 = of.createComprobanteConceptosConcepto();
+    Concepto c1 = of.createConcepto();
     c1.setUnidad("Servicio");
     c1.setNoIdentificacion("01");
     c1.setImporte(new BigDecimal("2000.00"));
@@ -126,11 +110,11 @@ public final class ExampleCFDv22Factory {
   }
 
   private static Impuestos createImpuestos(ObjectFactory of) {
-    Impuestos imps = of.createComprobanteImpuestos();
+    Impuestos imps = of.createImpuestos();
     imps.setTotalImpuestosTrasladados(new BigDecimal("320.00"));
-    Traslados trs = of.createComprobanteImpuestosTraslados();
+    Traslados trs = of.createTraslados();
     List<Traslado> list = trs.getTraslado(); 
-    Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
+    Traslado t1 = of.createTraslado();
     t1.setImporte(new BigDecimal("320.00"));
     t1.setImpuesto("IVA");
     t1.setTasa(new BigDecimal("16.00"));

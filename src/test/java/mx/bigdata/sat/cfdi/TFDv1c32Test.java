@@ -26,8 +26,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import mx.bigdata.sat.cfdi.examples.ExampleCFDv32Factory;
-
+import mx.bigdata.sat.examples.ExampleCFDv32Factory;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import org.junit.Before;
@@ -72,7 +71,7 @@ public final class TFDv1c32Test {
 
   @Before public void setupTFD() throws Exception {
     CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), 
-                          "mx.bigdata.sat.cfdi.examples");
+                          "mx.gob.sat.cfd.timbrefiscaldigital");
     cfd.sellar(key, cert);
     Date date = new GregorianCalendar(2011, 1, 7, 8, 51, 0).getTime();
     UUID uuid = UUID.fromString("843a05d7-207d-4adc-91e8-bda7175bcda3");

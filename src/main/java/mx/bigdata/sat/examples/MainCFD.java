@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfd.examples;
+package mx.bigdata.sat.examples;
 
 import java.io.FileInputStream;
 import java.security.PrivateKey;
@@ -25,7 +25,7 @@ import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.gob.sat.cfd._2.Comprobante;
 
-public final class Main {
+public final class MainCFD {
     
   public static void main(String[] args) throws Exception {
     CFDv2 cfd = new CFDv2(ExampleCFDFactory.createComprobante());

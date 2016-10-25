@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfdi.examples;
+package mx.bigdata.sat.examples;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,7 +37,7 @@ import mx.gob.sat.cfd._3.Comprobante.Impuestos.Traslados;
 import mx.gob.sat.cfd._3.Comprobante.Impuestos.Traslados.Traslado;
 import mx.gob.sat.cfd._3.Comprobante.Receptor;
 
-public final class ExampleCFDFactory {
+public final class ExampleCFDv3Factory {
     
   public static Comprobante createComprobante() throws Exception {
     ObjectFactory of = new ObjectFactory();
@@ -53,7 +53,7 @@ public final class ExampleCFDFactory {
     comp.setReceptor(createReceptor(of));
     comp.setConceptos(createConceptos(of));
     comp.setImpuestos(createImpuestos(of));
-    comp.setAddenda(createAddenda(of));
+    //comp.setAddenda(createAddenda(of));
     return comp;
   }
     

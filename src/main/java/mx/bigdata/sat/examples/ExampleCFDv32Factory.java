@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package mx.bigdata.sat.cfdi.examples;
+package mx.bigdata.sat.examples;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -33,6 +33,7 @@ import mx.gob.sat.cfd._32.Comprobante;
 import mx.gob.sat.cfd._32.ObjectFactory;
 import mx.gob.sat.cfd._32.TUbicacion;
 import mx.gob.sat.cfd._32.TUbicacionFiscal;
+import mx.gob.sat.nomina.Nomina;
 import mx.gob.sat.cfd._32.Comprobante.Addenda;
 import mx.gob.sat.cfd._32.Comprobante.Complemento;
 import mx.gob.sat.cfd._32.Comprobante.Conceptos;
@@ -70,7 +71,7 @@ public final class ExampleCFDv32Factory {
   
   private static Complemento createComplemento(ObjectFactory of) throws ParseException{
 	  Complemento complemento = of.createComprobanteComplemento();
-	  /*mx.bigdata.sat.common.nomina.schema.ObjectFactory ofn = new mx.bigdata.sat.common.nomina.schema.ObjectFactory();
+	  mx.gob.sat.nomina.ObjectFactory ofn = new mx.gob.sat.nomina.ObjectFactory();
 	  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	  
 	  Nomina nomina = ofn.createNomina();
@@ -163,9 +164,9 @@ public final class ExampleCFDv32Factory {
 	  /*incapacidades.getIncapacidad().add(incapacidad1);
 	  //incapacidades.getIncapacidad().add(incapacidad2);
 	  nomina.setIncapacidades(incapacidades);
-	  
-	  complemento.getAny().add(nomina);
 	  */
+	  //complemento.getAny().add(nomina);
+	  
 	  return complemento;
   }
     

@@ -27,8 +27,7 @@ import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
-import mx.bigdata.sat.cfdi.examples.ExampleCFDFactory;
-
+import mx.bigdata.sat.examples.ExampleCFDv3Factory;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.gob.sat.cfd._3.Comprobante;
@@ -56,15 +55,15 @@ public final class CFDv3Test {
   }
   
   @Test public void testOriginalString() throws Exception {
-    CFDv3 cfd = new CFDv3(ExampleCFDFactory.createComprobante(), 
-                          "mx.bigdata.sat.cfdi.examples");
+    CFDv3 cfd = new CFDv3(ExampleCFDv3Factory.createComprobante(), 
+                          "mx.gob.sat.cfd._3");
     String cadena = "||3.0|2011-02-06T20:38:12|ingreso|PAGO EN UNA SOLA EXHIBICION|466.43|488.50|PPL961114GZ1|PHARMA PLUS SA DE CV|AV. RIO MIXCOAC|No. 140|ACACIAS|BENITO JUAREZ|DISTRITO FEDERAL|Mexico|03240|AV. UNIVERSIDAD|1858|OXTOPULCO|DISTRITO FEDERAL|Mexico|03910|PEPJ8001019Q8|JUAN PEREZ PEREZ|AV UNIVERSIDAD|16 EDF 3|DPTO 101|COPILCO UNIVERSIDAD|COYOACAN|DISTRITO FEDERAL|Mexico|04360|1.0|CAPSULAS|VIBRAMICINA 100MG 10|244.00|244.00|1.0|BOTELLA|CLORUTO 500M|137.93|137.93|1.0|TABLETAS|SEDEPRON 250MG 10|84.50|84.50|IVA|0.00|0.00|IVA|16.00|22.07||";
     assertEquals(cadena, cfd.getCadenaOriginal());
   }
     
   @Test public void testSign() throws Exception {
-    CFDv3 cfd = new CFDv3(ExampleCFDFactory.createComprobante(), 
-                          "mx.bigdata.sat.cfdi.examples");
+    CFDv3 cfd = new CFDv3(ExampleCFDv3Factory.createComprobante(), 
+                          "mx.gob.sat.cfd._3");
     cfd.sellar(key, cert);
     String signature = "U0yTrfIKAllJtmASZQlgdzMeJLStjN+7nXyFHJ9Zk02LhT6BV4PD3qN2NZkuQQ27QFh8eluAxZ7BKY8qROyiIu6bi3h0ClZxgXdrHNxicDQVfQdo7EmqSVqj/teQcJdbZhjEmk4DABxTjPzk3vrktsj29DK/Fg1G/qYqCb5T+xY=";
     assertEquals(signature, cfd.getComprobante().getSello());
@@ -76,8 +75,8 @@ public final class CFDv3Test {
   }
   
   @Test public void testValidateVerify() throws Exception {
-    CFDv3 cfd = new CFDv3(ExampleCFDFactory.createComprobante(), 
-                          "mx.bigdata.sat.cfdi.examples");
+    CFDv3 cfd = new CFDv3(ExampleCFDv3Factory.createComprobante(), 
+                          "mx.gob.sat.cfd._3");
     cfd.sellar(key, cert);
     cfd.validar();
     cfd.verificar();

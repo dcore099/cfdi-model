@@ -30,7 +30,7 @@ import java.security.cert.X509Certificate;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import mx.bigdata.sat.cfdi.examples.ExampleCFDv32Factory;
+import mx.bigdata.sat.examples.ExampleCFDv32Factory;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.gob.sat.cfd._32.Comprobante;
@@ -62,13 +62,13 @@ public final class CFDv32Test {
   }
   
   @Test public void testOriginalString() throws Exception {
-    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.bigdata.sat.cfdi.examples", "mx.gob.sat.nomina");
+    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.gob.sat.cfd._32", "mx.gob.sat.nomina");
     String cadena = "||3.2|2012-02-06T20:38:12|ingreso|PAGO EN UNA SOLA EXHIBICION|466.43|488.50|efectivo|Mexico|PPL961114GZ1|PHARMA PLUS SA DE CV|AV. RIO MIXCOAC|No. 140|ACACIAS|BENITO JUAREZ|DISTRITO FEDERAL|Mexico|03240|AV. UNIVERSIDAD|1858|OXTOPULCO|DISTRITO FEDERAL|Mexico|03910|simplificado|PEPJ8001019Q8|JUAN PEREZ PEREZ|AV UNIVERSIDAD|16 EDF 3|DPTO 101|COPILCO UNIVERSIDAD|COYOACAN|DISTRITO FEDERAL|Mexico|04360|1.0|CAPSULAS|VIBRAMICINA 100MG 10|244.00|244.00|1.0|BOTELLA|CLORUTO 500M|137.93|137.93|1.0|TABLETAS|SEDEPRON 250MG 10|84.50|84.50|IVA|0.00|0.00|IVA|16.00|22.07||";
     assertEquals(cadena, cfd.getCadenaOriginal());
   }
     
   @Test public void testSign() throws Exception {
-    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.bigdata.sat.cfdi.examples", "mx.gob.sat.nomina");
+    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.gob.sat.cfd._32", "mx.gob.sat.nomina");
     cfd.sellar(key, cert);
     String signature = "RgcO+YOP97X9un4x+TDsJNoQPkfNg2/iyywDGpdkhN+n6grEJ4J6+eLSgQYK4MakykrlN1QB6CSf5H1M0NN4w1vQ5uFqPiopTRzgqg/e44cD/m6WoXANbi/3w1xG31BTNTgTXOsBkey7OzGF7c24rd7soDWZngkqrU6eEjE0DBw=";
     assertEquals(signature, cfd.getComprobante().getSello());
@@ -81,7 +81,7 @@ public final class CFDv32Test {
   }
   
   @Test public void testValidateVerify() throws Exception {
-    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.bigdata.sat.cfdi.examples", "mx.gob.sat.nomina");
+    CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.gob.sat.cfd._32", "mx.gob.sat.nomina");
     cfd.sellar(key, cert);
     cfd.validar();
     cfd.verificar();
@@ -98,7 +98,7 @@ public final class CFDv32Test {
   }
   
   @Test public void testCFDiJSON() throws Exception {
-	  CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.bigdata.sat.cfdi.examples", "mx.gob.sat.nomina");
+	  CFDv32 cfd = new CFDv32(ExampleCFDv32Factory.createComprobante(), "mx.gob.sat.cfd._32", "mx.gob.sat.nomina");
 	  JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Comprobante.class, Nomina.class}, null);
 	  Marshaller un = jc.createMarshaller();
 	  un.setProperty("eclipselink.media-type", "application/json");
