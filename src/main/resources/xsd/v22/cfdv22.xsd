@@ -17,6 +17,7 @@
    parseMethod="mx.bigdata.sat.schema.binder.DateTimeCustomBinder.parseDateTime"
    printMethod="mx.bigdata.sat.schema.binder.DateTimeCustomBinder.printDateTime"
            />
+        <!-- <xjc:superInterface name="mx.bigdata.sat.cfdi.ComprobanteVersion" /> -->
       </jaxb:globalBindings>
     </xs:appinfo>
   </xs:annotation>

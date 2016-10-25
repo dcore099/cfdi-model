@@ -45,6 +45,7 @@ dependencies {
 	provided 'org.projectlombok:lombok:0.11.4'
 
     testCompile 'junit:junit:4.8.1'
+    testCompile 'commons-io:commons-io:2.2'
    
 }
 
@@ -133,4 +134,14 @@ task JaxbCFDiSchemas(type: Xsd2JavaTask) {
     project.sourceSets.main.java.srcDirs += project.JaxbCFDiSchemas.generatedXsdDir
 }
 
-compileJava.dependsOn(JaxbCFDiSchemas)
+task certificateInfo (type: Test, dependsOn: testClasses) {
+	include '**/CertificateTest*'
+	debug true
+}
+
+task CFDv2Test (type: Test, dependsOn: testClasses) {
+	include '**/CFDv2Test*'
+	debug true
+}
+
+//compileJava.dependsOn(JaxbCFDiSchemas)
