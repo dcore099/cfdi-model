@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -129,5 +130,8 @@ public final class CFDv32Test {
     assertNotNull(sellado.getSello());
     assertNotNull(sellado.getNoCertificado());
     assertNotNull(sellado.getCertificado());
+    
+    FileOutputStream fos = new FileOutputStream("resources/xml/ejemplo.xml");
+    cfd.guardar(fos);
   }
 }

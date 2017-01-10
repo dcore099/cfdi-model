@@ -66,250 +66,229 @@ import com.google.common.collect.Maps;
 
 public final class CFDv32 implements CFDI {
 
-  private static final String XSLT = "/xslt/cadenaoriginal_3_2.xslt";
-  
-  private static final String[] XSD = new String[] {
-      "/xsd/v32/cfdv32.xsd",
-      "/xsd/v3/TimbreFiscalDigital.xsd", 
-      "/xsd/common/TuristaPasajeroExtranjero/TuristaPasajeroExtranjero.xsd",
-      "/xsd/common/detallista/detallista.xsd",
-      "/xsd/common/divisas/divisas.xsd",
-      "/xsd/common/donat/donat11.xsd",
-      "/xsd/common/ecb/ecb.xsd",
-      "/xsd/common/ecc/ecc.xsd",
-      "/xsd/common/iedu/iedu.xsd",
-      "/xsd/common/implocal/implocal.xsd",
-      "/xsd/common/leyendasFisc/leyendasFisc.xsd",
-      "/xsd/common/pfic/pfic.xsd",
-      "/xsd/common/psgcfdsp/psgcfdsp.xsd",
-      "/xsd/common/psgecfd/psgecfd.xsd",
-      "/xsd/common/terceros/terceros11.xsd",
-      "/xsd/common/ventavehiculos/ventavehiculos.xsd",
-      "/xsd/common/nomina/nomina11.xsd"
-  };
+	private static final String XSLT = "/xslt/cadenaoriginal_3_2.xslt";
 
-  private static final String XML_HEADER = 
-    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	private static final String[] XSD = new String[] { "/xsd/v32/cfdv32.xsd", "/xsd/v3/TimbreFiscalDigital.xsd",
+			"/xsd/common/TuristaPasajeroExtranjero/TuristaPasajeroExtranjero.xsd",
+			"/xsd/common/detallista/detallista.xsd", "/xsd/common/divisas/divisas.xsd", "/xsd/common/donat/donat11.xsd",
+			"/xsd/common/ecb/ecb.xsd", "/xsd/common/ecc/ecc.xsd", "/xsd/common/iedu/iedu.xsd",
+			"/xsd/common/implocal/implocal.xsd", "/xsd/common/leyendasFisc/leyendasFisc.xsd",
+			"/xsd/common/pfic/pfic.xsd", "/xsd/common/psgcfdsp/psgcfdsp.xsd", "/xsd/common/psgecfd/psgecfd.xsd",
+			"/xsd/common/terceros/terceros11.xsd", "/xsd/common/ventavehiculos/ventavehiculos.xsd",
+			"/xsd/common/nomina/nomina11.xsd", "/xsd/common/nomina12/nomina12.xsd" };
 
-  private static final String BASE_CONTEXT = "mx.gob.sat.cfd._32";
-  
-  private final static Joiner JOINER = Joiner.on(':');
-      
-  private final JAXBContext context;
+	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
-  public final static String DOC_TYPE = "cfdi:Comprobante";
-  
-  public static final ImmutableMap<String, String> PREFIXES = 
-    ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance","xsi", 
-                    "http://www.sat.gob.mx/cfd/3", "cfdi", 
-                    "http://www.sat.gob.mx/TimbreFiscalDigital", "tfd");
+	private static final String BASE_CONTEXT = "mx.gob.sat.cfd._32";
 
-  private final Map<String, String> localPrefixes = Maps.newHashMap(PREFIXES);
-  
-  private TransformerFactory tf;
+	private final static Joiner JOINER = Joiner.on(':');
 
-  final Comprobante document;
+	private final JAXBContext context;
 
-  public CFDv32(InputStream in, String... contexts) throws Exception {
-    this.context = getContext(contexts);
-    this.document = load(in);
-  }
+	public final static String DOC_TYPE = "cfdi:Comprobante";
 
-  public CFDv32(Comprobante comprobante, String... contexts) throws Exception {
-    this.context = getContext(contexts);
-    this.document = copy(comprobante);
-  }
+	public static final ImmutableMap<String, String> PREFIXES = ImmutableMap.of(
+			"http://www.w3.org/2001/XMLSchema-instance", "xsi", "http://www.sat.gob.mx/cfd/3", "cfdi",
+			"http://www.sat.gob.mx/TimbreFiscalDigital", "tfd");
 
-  public void addNamespace(String uri, String prefix) {
-    localPrefixes.put(uri, prefix);
-  }
+	private final Map<String, String> localPrefixes = Maps.newHashMap(PREFIXES);
 
-  public void setTransformerFactory(TransformerFactory tf) {
-    this.tf = tf;   
-    tf.setURIResolver(new URIResolverImpl()); 
-  }
+	private TransformerFactory tf;
 
-  public void sellar(PrivateKey key, X509Certificate cert) throws Exception {
-    cert.checkValidity(); 
-    String signature = getSignature(key);
-    document.setSello(signature);
-    byte[] bytes = cert.getEncoded();
-    Base64 b64 = new Base64(-1);
-    String certStr = b64.encodeToString(bytes);
-    document.setCertificado(certStr);
-    BigInteger bi = cert.getSerialNumber();
-    document.setNoCertificado(new String(bi.toByteArray()));
-  }
-  
-  public Comprobante sellarComprobante(PrivateKey key, X509Certificate cert) 
-    throws Exception {
-    sellar(key, cert);
-    return doGetComprobante();
-  }
+	final Comprobante document;
 
-  public void validar() throws Exception {
-    validar(null);
-  }
+	public CFDv32(InputStream in, String... contexts) throws Exception {
+		this.context = getContext(contexts);
+		this.document = load(in);
+	}
 
-  public void validar(ErrorHandler handler) throws Exception {
-    SchemaFactory sf =
-      SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    Source[] schemas = new Source[XSD.length];
-    for (int i = 0; i < XSD.length; i++) {
-      schemas[i] = new StreamSource(getClass().getResourceAsStream(XSD[i]));
-    }
-    Schema schema = sf.newSchema(schemas);
-    Validator validator = schema.newValidator();
-    if (handler != null) {
-      validator.setErrorHandler(handler);
-    }
-    validator.validate(new JAXBSource(context, document));
-  }
+	public CFDv32(Comprobante comprobante, String... contexts) throws Exception {
+		this.context = getContext(contexts);
+		this.document = copy(comprobante);
+	}
 
-  public void verificar() throws Exception {
-    String certStr = document.getCertificado();
-    Base64 b64 = new Base64();
-    byte[] cbs = b64.decode(certStr);
+	public void addNamespace(String uri, String prefix) {
+		localPrefixes.put(uri, prefix);
+	}
 
-    X509Certificate cert = KeyLoaderFactory.createInstance(
-            KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
-            new ByteArrayInputStream(cbs)
-    ).getKey();
+	public void setTransformerFactory(TransformerFactory tf) {
+		this.tf = tf;
+		tf.setURIResolver(new URIResolverImpl());
+	}
 
-    String sigStr = document.getSello();
-    byte[] signature = b64.decode(sigStr); 
-    byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
-    sig.initVerify(cert);
-    sig.update(bytes);
-    boolean bool = sig.verify(signature);
-    if (!bool) {
-      throw new Exception("Invalid signature");
-    }
-  }
+	public void sellar(PrivateKey key, X509Certificate cert) throws Exception {
+		cert.checkValidity();
+		String signature = getSignature(key);
+		document.setSello(signature);
+		byte[] bytes = cert.getEncoded();
+		Base64 b64 = new Base64(-1);
+		String certStr = b64.encodeToString(bytes);
+		document.setCertificado(certStr);
+		BigInteger bi = cert.getSerialNumber();
+		document.setNoCertificado(new String(bi.toByteArray()));
+	}
 
-  public void guardar(OutputStream out) throws Exception {
-    Marshaller m = context.createMarshaller();
-    m.setProperty("com.sun.xml.bind.namespacePrefixMapper",
-                  new NamespacePrefixMapperImpl(localPrefixes));
-    m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-    m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, 
-                  "http://www.sat.gob.mx/cfd/3  "
-                  + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd");
-    byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
-    out.write(xmlHeaderBytes); 
-    m.marshal(document, out);
-  }
+	public Comprobante sellarComprobante(PrivateKey key, X509Certificate cert) throws Exception {
+		sellar(key, cert);
+		return doGetComprobante();
+	}
 
-  public String getCadenaOriginal() throws Exception {
-    byte[] bytes = getOriginalBytes();
-    return new String(bytes, "UTF8");
-  }
+	public void validar() throws Exception {
+		validar(null);
+	}
 
-  public static Comprobante newComprobante(InputStream in) throws Exception {
-    return load(in);
-  }
+	public void validar(ErrorHandler handler) throws Exception {
+		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Source[] schemas = new Source[XSD.length];
+		for (int i = 0; i < XSD.length; i++) {
+			schemas[i] = new StreamSource(getClass().getResourceAsStream(XSD[i]));
+		}
+		Schema schema = sf.newSchema(schemas);
+		Validator validator = schema.newValidator();
+		if (handler != null) {
+			validator.setErrorHandler(handler);
+		}
+		validator.validate(new JAXBSource(context, document));
+	}
 
-  byte[] getOriginalBytes() throws Exception {
-    JAXBSource in = new JAXBSource(context, document);
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Result out = new StreamResult(baos);
-    TransformerFactory factory = tf;
-    if (factory == null) {
-      factory = TransformerFactory.newInstance();
-      factory.setURIResolver(new URIResolverImpl());
-    }     
-    Transformer transformer = factory
-      .newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
-    transformer.transform(in, out);
-    return baos.toByteArray();
-  }
-    
-  String getSignature(PrivateKey key) throws Exception {
-    byte[] bytes = getOriginalBytes();
-    Signature sig = Signature.getInstance("SHA1withRSA");
-    sig.initSign(key);
-    sig.update(bytes);
-    byte[] signed = sig.sign();
-    Base64 b64 = new Base64(-1);
-    return b64.encodeToString(signed);
-  }
+	public void verificar() throws Exception {
+		String certStr = document.getCertificado();
+		Base64 b64 = new Base64();
+		byte[] cbs = b64.decode(certStr);
 
-  public ComprobanteBase getComprobante() throws Exception {
-    return new CFDv32ComprobanteBase(doGetComprobante());
-  }
-  
-  public Comprobante doGetComprobante() throws Exception {
-    return copy(document);
-  }
+		X509Certificate cert = KeyLoaderFactory
+				.createInstance(KeyLoaderEnumeration.PUBLIC_KEY_LOADER, new ByteArrayInputStream(cbs)).getKey();
 
-  // Defensive deep-copy
-  private Comprobante copy(Comprobante comprobante) throws Exception {
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    dbf.setNamespaceAware(true);
-    DocumentBuilder db = dbf.newDocumentBuilder(); 
-    Document doc = db.newDocument();
-    Marshaller m = context.createMarshaller();
-    m.marshal(comprobante, doc);
-    Unmarshaller u = context.createUnmarshaller();
-    return (Comprobante) u.unmarshal(doc);
-  }
-  
-  public static final class CFDv32ComprobanteBase implements ComprobanteBase {
+		String sigStr = document.getSello();
+		byte[] signature = b64.decode(sigStr);
+		byte[] bytes = getOriginalBytes();
+		Signature sig = Signature.getInstance("SHA1withRSA");
+		sig.initVerify(cert);
+		sig.update(bytes);
+		boolean bool = sig.verify(signature);
+		if (!bool) {
+			throw new Exception("Invalid signature");
+		}
+	}
 
-    private final Comprobante document;
-    
-    public CFDv32ComprobanteBase(Comprobante document) {
-      this.document = document;
-    }
-    
-    public boolean hasComplemento() {
-      return document.getComplemento() != null;
-    } 
-    
-    public List<Object> getComplementoGetAny() {
-      return document.getComplemento().getAny();
-    }    
-    
-    public String getSello() {
-      return document.getSello();
-    }
-    
-    public void setComplemento(Element element) {
-      ObjectFactory of = new ObjectFactory();
-      Comprobante.Complemento comp = of.createComprobanteComplemento();
-      List<Object> list = comp.getAny(); 
-      list.add(element);
-      document.setComplemento(comp);
-    }
-    
-    public Object getComprobante() {
-      return document;
-    }
-  }
-  
-  private static JAXBContext getContext(String[] contexts) throws Exception {
-    List<String> ctx = Lists.asList(BASE_CONTEXT, contexts);
-    return JAXBContext.newInstance(JOINER.join(ctx));
-  }
+	public void guardar(OutputStream out) throws Exception {
+		Marshaller m = context.createMarshaller();
+		m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl(localPrefixes));
+		m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
+				"http://www.sat.gob.mx/cfd/3  " + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd");
+		byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
+		out.write(xmlHeaderBytes);
+		m.marshal(document, out);
+	}
 
-  private static Comprobante load(InputStream source, String... contexts) 
-    throws Exception {
-    JAXBContext context = getContext(contexts);
-    try {
-      Unmarshaller u = context.createUnmarshaller();
-      return (Comprobante) u.unmarshal(source);
-    } finally {
-      source.close();
-    }
-  }
+	public String getCadenaOriginal() throws Exception {
+		byte[] bytes = getOriginalBytes();
+		return new String(bytes, "UTF8");
+	}
 
-  static void dump(String title, byte[] bytes, PrintStream out) {
-    out.printf("%s: ", title);
-    for (byte b : bytes) {
-      out.printf("%02x ", b & 0xff);
-    }
-    out.println();
-  }
+	public static Comprobante newComprobante(InputStream in) throws Exception {
+		return load(in);
+	}
+
+	byte[] getOriginalBytes() throws Exception {
+		JAXBSource in = new JAXBSource(context, document);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Result out = new StreamResult(baos);
+		TransformerFactory factory = tf;
+		if (factory == null) {
+			factory = TransformerFactory.newInstance();
+			factory.setURIResolver(new URIResolverImpl());
+		}
+		Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+		transformer.transform(in, out);
+		return baos.toByteArray();
+	}
+
+	String getSignature(PrivateKey key) throws Exception {
+		byte[] bytes = getOriginalBytes();
+		Signature sig = Signature.getInstance("SHA1withRSA");
+		sig.initSign(key);
+		sig.update(bytes);
+		byte[] signed = sig.sign();
+		Base64 b64 = new Base64(-1);
+		return b64.encodeToString(signed);
+	}
+
+	public ComprobanteBase getComprobante() throws Exception {
+		return new CFDv32ComprobanteBase(doGetComprobante());
+	}
+
+	public Comprobante doGetComprobante() throws Exception {
+		return copy(document);
+	}
+
+	// Defensive deep-copy
+	private Comprobante copy(Comprobante comprobante) throws Exception {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document doc = db.newDocument();
+		Marshaller m = context.createMarshaller();
+		m.marshal(comprobante, doc);
+		Unmarshaller u = context.createUnmarshaller();
+		return (Comprobante) u.unmarshal(doc);
+	}
+
+	public static final class CFDv32ComprobanteBase implements ComprobanteBase {
+
+		private final Comprobante document;
+
+		public CFDv32ComprobanteBase(Comprobante document) {
+			this.document = document;
+		}
+
+		public boolean hasComplemento() {
+			return document.getComplemento() != null;
+		}
+
+		public List<Object> getComplementoGetAny() {
+			return document.getComplemento().getAny();
+		}
+
+		public String getSello() {
+			return document.getSello();
+		}
+
+		public void setComplemento(Element element) {
+			ObjectFactory of = new ObjectFactory();
+			Comprobante.Complemento comp = of.createComprobanteComplemento();
+			List<Object> list = comp.getAny();
+			list.add(element);
+			document.setComplemento(comp);
+		}
+
+		public Object getComprobante() {
+			return document;
+		}
+	}
+
+	private static JAXBContext getContext(String[] contexts) throws Exception {
+		List<String> ctx = Lists.asList(BASE_CONTEXT, contexts);
+		return JAXBContext.newInstance(JOINER.join(ctx));
+	}
+
+	private static Comprobante load(InputStream source, String... contexts) throws Exception {
+		JAXBContext context = getContext(contexts);
+		try {
+			Unmarshaller u = context.createUnmarshaller();
+			return (Comprobante) u.unmarshal(source);
+		} finally {
+			source.close();
+		}
+	}
+
+	static void dump(String title, byte[] bytes, PrintStream out) {
+		out.printf("%s: ", title);
+		for (byte b : bytes) {
+			out.printf("%02x ", b & 0xff);
+		}
+		out.println();
+	}
 }
