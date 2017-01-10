@@ -55,7 +55,7 @@ uploadArchives {
             repository(url: "http://10.22.1.1:8090/repository/internal/") {
             	authentication(userName: 'raulrt', password: 'Pas$word89')
             }
-            pom.version = '0.0.1'
+            pom.version = '0.0.9'
             pom.artifactId = 'cfdi-model'
             pom.groupId = 'mx.gob.seseqro'
         }
@@ -67,13 +67,9 @@ publishing {
         maven(MavenPublication) {
             groupId 'mx.gob.seseqro'
             artifactId 'cfdi-model'
-            version '0.0.1'
+            version '0.0.9'
 
             from components.java
-            /*
-            artifact sourcesJar {
-            	classifier: 'sources'
-            }*/
         }
     }
 }
@@ -116,7 +112,8 @@ task JaxbCFDiSchemas(type: Xsd2JavaTask) {
 						[ 'src/main/resources/xsd/common/ventavehiculos/ventavehiculos.xsd', 'mx.gob.sat.ventavehiculos'],
 						[ 'src/main/resources/xsd/ce_balanza_comprobacion/BalanzaComprobacion_1_1.xsd', 'mx.gob.sat.ce_balanza_comprobacion'],
 						[ 'src/main/resources/xsd/ce_catalogo_cuentas/CatalogoCuentas_1_1.xsd', 'mx.gob.sat.ce_catalogo_cuentas'],
-						[ 'src/main/resources/xsd/ce_polizas_periodo/PolizasPeriodo_1_1.xsd', 'mx.gob.sat.ce_polizas_periodo'],	
+						[ 'src/main/resources/xsd/ce_polizas_periodo/PolizasPeriodo_1_1.xsd', 'mx.gob.sat.ce_polizas_periodo'],
+						[ 'src/main/resources/xsd/common/nomina12/nomina12.xsd', 'mx.gob.sat.nomina12'],	
 					]
 	classpath = project.configurations.maybeCreate('xsd2java')
 	taskClassname = 'org.jvnet.jaxb2_commons.xjc.XJC2Task'
@@ -141,6 +138,16 @@ task certificateInfo (type: Test, dependsOn: testClasses) {
 
 task CFDv2Test (type: Test, dependsOn: testClasses) {
 	include '**/CFDv2Test*'
+	debug true
+}
+
+task CFDv32Test (type: Test, dependsOn: testClasses) {
+	include '**/CFDv32Test*'
+	debug true
+}
+
+task Nomina12Test (type: Test, dependsOn: testClasses) {
+	include '**/Nomina12Test*'
 	debug true
 }
 
