@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
@@ -23,10 +24,13 @@ import javax.xml.bind.util.JAXBSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -89,14 +93,12 @@ public class CFDv32Factory implements CFDI {
 	
 	public CFDv32Factory(InputStream in) throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
 		byte[] buffer = new byte[1024];
 		int len;
 		while ((len = in.read(buffer)) > -1 ) {
 		    baos.write(buffer, 0, len);
 		}
 		baos.flush();
-		
 		InputStream is1 = new ByteArrayInputStream(baos.toByteArray());
 		InputStream is2 = new ByteArrayInputStream(baos.toByteArray()); 
 		
@@ -310,6 +312,19 @@ public class CFDv32Factory implements CFDI {
 		
 		return arrayContexts;
 	}
+	
+	private static String nodeToString(Node node) {
+	    StringWriter sw = new StringWriter();
+	    try {
+	      Transformer t = TransformerFactory.newInstance().newTransformer();
+	      t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+	      t.setOutputProperty(OutputKeys.INDENT, "yes");
+	      t.transform(new DOMSource(node), new StreamResult(sw));
+	    } catch (TransformerException te) {
+	      System.out.println("nodeToString Transformer Exception");
+	    }
+	    return sw.toString();
+	  }
 	
 	public static List<DocumentType> getDocumentTypes(InputStream source) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException {
 		DocumentType docType = new DocumentType();
