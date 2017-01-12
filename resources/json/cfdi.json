@@ -1,0 +1,98 @@
+{
+  "refID": "214",
+  "comprobante" : {
+      "version" : "3.2",
+      "serie" : "NOM",
+      "folio" : "38028",
+      "fecha" : "2017-01-05T15:23:00",
+      "formaDePago" : "En una sola exhibición",
+      "subTotal" : 50000.00,
+      "descuento" : 1212.00,
+      "Moneda" : "MXN",
+      "total" : 48788.00,
+      "tipoDeComprobante" : "egreso",
+      "metodoDePago" : "NA",
+      "LugarExpedicion" : "66480",
+      "Emisor" : {
+         "rfc" : "ACO560518KW7",
+         "nombre" : "PRUEBA",
+         "RegimenFiscal" : [ {
+            "Regimen" : "601"
+         } ]
+      },
+      "Receptor" : {
+         "rfc" : "TUCA5703119R5",
+         "nombre" : "DEMO-NOMBRE"
+      },
+      "Conceptos" : {
+         "Concepto" : [ {
+            "cantidad" : 1,
+            "unidad" : "ACT",
+            "descripcion" : "Pago de nómina",
+            "valorUnitario" : 50000.0000,
+            "importe" : 50000.00
+         } ]
+      },
+      "Impuestos" : {
+      },
+      "Complemento" : {
+         "Nomina" : [ {
+            "FechaFinalPago" : "2016-12-22",
+            "FechaInicialPago" : "2016-12-22",
+            "FechaPago" : "2016-12-22",
+            "NumDiasPagados" : "1.000",
+            "TipoNomina" : "E",
+            "TotalDeducciones" : "1212.00",
+            "TotalPercepciones" : "50000.00",
+            "Version" : "1.2",
+            "Emisor" : {
+               "RegistroPatronal" : "BBBB020202BB0"
+            },
+            "Receptor" : {
+               "Antigüedad": "P6Y6M22D",
+               "ClaveEntFed" : "NLE",
+               "Curp" : "VAAI901027HNLRRS07",
+               "Departamento" : "CONTABILIDAD",
+               "FechaInicioRelLaboral" : "2010-05-31",
+               "NumEmpleado" : "5300",
+               "NumSeguridadSocial" : "43098825680",
+               "PeriodicidadPago" : "99",
+               "RiesgoPuesto" : "4",
+               "SalarioBaseCotApor" : "337.76",
+               "SalarioDiarioIntegrado" : "331.66",
+               "TipoContrato" : "01",
+               "TipoJornada" : "01",
+               "TipoRegimen" : "02"
+            },
+            "Percepciones" : {
+               "TotalExento" : "43320.02",
+               "TotalGravado" : "6679.98",
+               "TotalSeparacionIndemnizacion" : "50000.00",
+               "Percepcion" : {
+                  "Clave" : "026",
+                  "Concepto" : "INDEMNIZACIÓN",
+                  "ImporteExento" : "43320.02",
+                  "ImporteGravado" : "6679.98",
+                  "TipoPercepcion" : "025"
+               },
+               "SeparacionIndemnizacion" : {
+                  "IngresoAcumulable" : "10000.00",
+                  "IngresoNoAcumulable" : "40000.00",
+                  "NumAñosServicio" : "6",
+                  "TotalPagado" : "50000.00",
+                  "UltimoSueldoMensOrd" : "10000.00"
+               }
+            },
+            "Deducciones" : {
+               "TotalImpuestosRetenidos" : "1212.00",
+               "Deduccion" : {
+                  "Clave" : "049",
+                  "Concepto" : "ISPT",
+                  "Importe" : "1212.00",
+                  "TipoDeduccion" : "002"
+               }
+            }
+         } ]
+      }
+   }
+}

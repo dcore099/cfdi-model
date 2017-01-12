@@ -40,6 +40,7 @@ dependencies {
 	compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.1'
 	compile 'com.sun.xml.bind:jaxb-xjc:2.1.12'
 	compile 'com.sun.xml.bind:jaxb-impl:2.1.12'
+	compile 'com.jayway.jsonpath:json-path:2.1.0'
 	//compile 'javax.xml.bind:jaxb-api:2.2.7'
 
 	provided 'org.projectlombok:lombok:0.11.4'
@@ -148,6 +149,11 @@ task CFDv32Test (type: Test, dependsOn: testClasses) {
 
 task Nomina12Test (type: Test, dependsOn: testClasses) {
 	include '**/Nomina12Test*'
+	debug true
+}
+
+task JsonParserTest (type: Test, dependsOn: testClasses) {
+	include '**/JsonParserTest*'
 	debug true
 }
 

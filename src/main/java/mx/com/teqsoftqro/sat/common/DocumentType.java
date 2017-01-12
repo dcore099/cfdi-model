@@ -2,8 +2,13 @@ package mx.com.teqsoftqro.sat.common;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import com.google.common.collect.Lists;
 
+@XmlRootElement(name = "CFDi")
+@XmlType
 public class DocumentType {
 
 	private String root;

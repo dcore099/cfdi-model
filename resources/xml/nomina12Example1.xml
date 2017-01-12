@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:nomina12="http://www.sat.gob.mx/nomina12" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" LugarExpedicion="76000" metodoDePago="NA" tipoDeComprobante="egreso" total="3251.76" Moneda="MXN" descuento="883.24" subTotal="4135" certificado="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" noCertificado="20001000000300005692" formaDePago="Pago en una sola exhibicion" sello="LC3R5VUFkQfam2ZffgB65XNH9SFA9hlkXWU8j0+rPM7ZFYH4A4Z919n4nMdZ4/Y6VSdXJX2/jnH8UGxVZkveJyE9Mqln6hi7o9xILtVLLSIXOSSw/PsEGoYox869jEwMRr7HuKoZMJrRbSrvi209pMR09eQMR295q3NRdiuCE3m8aB3zVKmVgvzj9y4pPS2v3Dq0GB308idxfFdCSZk+uBNbEHCKnUx1o4YjykYeS3QlecGt9+nu7kmG3o544xfaIpxwnMZ1/hLnjakVpXTog5ti/4nMQfPDXBASR3MA/+w+16uMAaNKHPcNOjzt6mIVmz5vwxZHWk3S5TF+URyvvQ==" fecha="2017-01-11T16:03:05" folio="0000032" serie="RHN" version="3.2" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3  http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd">
+    <cfdi:Emisor nombre="SERVICIOS DE SALUD DEL ESTADO DE QUERETARO" rfc="ACO560518KW7">
+        <cfdi:RegimenFiscal Regimen="603"/>
+    </cfdi:Emisor>
+    <cfdi:Receptor nombre="AGUILAR,ISLAS/DALIA LIZBETH                            " rfc="AUAC4601138F9"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto importe="4135" valorUnitario="4135" descripcion="Pago de nómina" unidad="ACT" cantidad="1"/>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos/>
+    <cfdi:Complemento>
+        <nomina12:Nomina TotalDeducciones="883.24" TotalPercepciones="4135" NumDiasPagados="15" FechaFinalPago="2016-11-30" FechaInicialPago="2016-11-16" FechaPago="2016-11-30" TipoNomina="O" Version="1.2">
+            <nomina12:Emisor>
+                <nomina12:EntidadSNCF OrigenRecurso="IP"/>
+            </nomina12:Emisor>
+            <nomina12:Receptor ClaveEntFed="AGU" PeriodicidadPago="04" Puesto="APOYO ADMINISTRATIVO EN SALUD A1" Departamento="OFICINA CENTRAL, SUBDIRECCION DE SISTEMATIZACION DEL PAGO" NumEmpleado="106573" TipoRegimen="99" TipoContrato="99" FechaInicioRelLaboral="2012-06-01" Curp="AUID890815MDFGSL02"/>
+            <nomina12:Percepciones TotalExento="0" TotalGravado="4135" TotalSueldos="4135">
+                <nomina12:Percepcion ImporteExento="0" ImporteGravado="4135" Concepto="Pagos varios" Clave="P9600" TipoPercepcion="038"/>
+            </nomina12:Percepciones>
+            <nomina12:Deducciones TotalImpuestosRetenidos="883.24" TotalOtrasDeducciones="0">
+                <nomina12:Deduccion Importe="883.24" Concepto="Impuesto sobre la renta" Clave="D0100" TipoDeduccion="002"/>
+            </nomina12:Deducciones>
+        </nomina12:Nomina>
+    </cfdi:Complemento>
+</cfdi:Comprobante>
