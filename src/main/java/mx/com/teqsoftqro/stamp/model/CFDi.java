@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -53,7 +54,6 @@ public class CFDi implements Serializable {
 	
 	// XML
 	private Comprobante comprobante;
-	private DocumentTypes documentTypes;
 	
 	// Campos Extra 
 	private String observaciones;
@@ -63,6 +63,7 @@ public class CFDi implements Serializable {
 	private String formaPago;
 	private String numeroCuenta;
 	private String unidadGenero;
+	private String centroCostos;
 	private String correos;
 	
 	
@@ -647,11 +648,11 @@ public class CFDi implements Serializable {
 		
 		return true;
 	}
-	public DocumentTypes getDocumentTypes() {
-		return documentTypes;
+	public String getCentroCostos() {
+		return centroCostos;
 	}
-	public void setDocumentTypes(DocumentTypes documentTypes) {
-		this.documentTypes = documentTypes;
+	public void setCentroCostos(String centroCostos) {
+		this.centroCostos = centroCostos;
 	}
 	
 	

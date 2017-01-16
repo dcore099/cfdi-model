@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,6 +53,8 @@ import mx.com.teqsoftqro.sat.common.ComprobanteBase;
 import mx.com.teqsoftqro.sat.common.Constants;
 import mx.com.teqsoftqro.sat.common.DiscoveryFormatType;
 import mx.com.teqsoftqro.sat.common.DocumentType;
+import mx.com.teqsoftqro.sat.common.DocumentTypes;
+import mx.com.teqsoftqro.sat.common.NamespacePrefixMapperImpl;
 import mx.com.teqsoftqro.sat.common.UrlPrefixes;
 import mx.com.teqsoftqro.stamp.model.CFDi;
 import mx.gob.sat.cfd._32.Comprobante;
@@ -59,18 +64,7 @@ import net.minidev.json.JSONArray;
 
 public class CFDiFactory {
 
-private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-	
-	private static final String XSLT = "/xslt/cadenaoriginal_3_2.xslt";
-	
-	private static final String[] XSD = new String[] { "/xsd/v32/cfdv32.xsd", "/xsd/v3/TimbreFiscalDigital.xsd",
-			"/xsd/common/TuristaPasajeroExtranjero/TuristaPasajeroExtranjero.xsd",
-			"/xsd/common/detallista/detallista.xsd", "/xsd/common/divisas/divisas.xsd", "/xsd/common/donat/donat11.xsd",
-			"/xsd/common/ecb/ecb.xsd", "/xsd/common/ecc/ecc.xsd", "/xsd/common/iedu/iedu.xsd",
-			"/xsd/common/implocal/implocal.xsd", "/xsd/common/leyendasFisc/leyendasFisc.xsd",
-			"/xsd/common/pfic/pfic.xsd", "/xsd/common/psgcfdsp/psgcfdsp.xsd", "/xsd/common/psgecfd/psgecfd.xsd",
-			"/xsd/common/terceros/terceros11.xsd", "/xsd/common/ventavehiculos/ventavehiculos.xsd",
-			"/xsd/common/nomina/nomina11.xsd", "/xsd/common/nomina12/nomina12.xsd" };
+	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	
 	public static final ImmutableMap<String, String> PREFIXES = ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance", "xsi");
 	
@@ -106,6 +100,8 @@ private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8
 			Class[] ctxs = getClassContexts(docTypes);
 			this.context = getContext(ctxs);
 			this.cfdi = loadXml(is2, ctxs);
+			DocumentTypes docTypes2 = new DocumentTypes();
+			docTypes2.setDocumentTypes(docTypes);
 			this.baseDocument = new CFDv32ComprobanteBase(this.cfdi.getComprobante(), docTypes);
 			addNamespaces();
 		} else if (this.format == DiscoveryFormatType.JSON) {
@@ -113,6 +109,8 @@ private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8
 			Class[] ctxs = getClassContexts(docTypes);
 			this.context = getContext(ctxs);
 			this.cfdi = loadJson(is2, ctxs);
+			DocumentTypes docTypes2 = new DocumentTypes();
+			docTypes2.setDocumentTypes(docTypes);
 			this.baseDocument = new CFDv32ComprobanteBase(this.cfdi.getComprobante(), docTypes);
 			addNamespaces();
 		}
@@ -139,21 +137,37 @@ private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8
 			source.close();
 		}
 	}
+	
+	public void guardar(OutputStream out) throws Exception {
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		m.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.name());
+		byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
+		if (format == DiscoveryFormatType.XML) {
+			out.write(xmlHeaderBytes);
+		}
+		m.marshal(cfdi, out);
+	}
 
 	private List<DocumentType> getDocumentTypesJson(InputStream source) {
 		List<DocumentType> docType = new ArrayList<DocumentType>();
 		DocumentContext dc = JsonPath.parse(source);
 		String versionComprobante = dc.read("$['comprobante']['version']");
 		docType.add(new DocumentType("Comprobante", versionComprobante));
-		Map<String, Object> listStr = dc.read("$['comprobante']['Complemento']");
-		Set<Entry<String, Object>> keyValues = listStr.entrySet();
-		for (Entry<String, Object> ent : keyValues) {
-			String str = ((JSONArray) ent.getValue()).toString();
-			JsonObject object = (JsonObject) ((JsonArray) Json.createReader(new StringReader(str)).read()).get(0);
-			String version = (object.getJsonString("Version").getString() == null) ? object.getJsonString("version").getString() : object.getJsonString("Version").getString();
-			version = (version != null) ? version.replace("\"", "") : null ;
-			docType.add(new DocumentType(ent.getKey(), version));
-		};
+		try {
+			Map<String, Object> listStr = dc.read("$['comprobante']['Complemento']");
+			Set<Entry<String, Object>> keyValues = listStr.entrySet();
+			for (Entry<String, Object> ent : keyValues) {
+				String str = ((JSONArray) ent.getValue()).toString();
+				JsonObject object = (JsonObject) ((JsonArray) Json.createReader(new StringReader(str)).read()).get(0);
+				String version = (object.getJsonString("Version").getString() == null) ? object.getJsonString("version").getString() : object.getJsonString("Version").getString();
+				version = (version != null) ? version.replace("\"", "") : null ;
+				docType.add(new DocumentType(ent.getKey(), version));
+			}
+		} catch (Exception e) {
+			
+		}
+		
 		return docType;
 	}
 	
@@ -272,10 +286,11 @@ private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8
 			}
 		}
 		
-		Class[] arrayContexts = new Class[contexts.size() + 1];
+		Class[] arrayContexts = new Class[contexts.size() + 2];
 		Iterator<Class> itString = contexts.iterator();
 		int cont = 0;
 		arrayContexts[cont++] = mx.com.teqsoftqro.stamp.model.CFDi.class;
+		arrayContexts[cont++] = mx.com.teqsoftqro.stamp.model.AcuseReciboFinkok.class;
 		while (itString.hasNext()) {
 			arrayContexts[cont] = itString.next();
 			cont++;

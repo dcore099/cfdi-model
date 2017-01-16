@@ -41,6 +41,8 @@ dependencies {
 	compile 'com.sun.xml.bind:jaxb-xjc:2.1.12'
 	compile 'com.sun.xml.bind:jaxb-impl:2.1.12'
 	compile 'com.jayway.jsonpath:json-path:2.1.0'
+	compile group: 'avalon-framework', name: 'avalon-framework-api', version: '4.2.0'
+    compile group: 'fop', name: 'fop', version: '0.20.5'
 	//compile 'javax.xml.bind:jaxb-api:2.2.7'
 
 	provided 'org.projectlombok:lombok:0.11.4'
@@ -56,7 +58,7 @@ uploadArchives {
             repository(url: "http://10.22.1.1:8090/repository/internal/") {
             	authentication(userName: 'raulrt', password: 'Pas$word89')
             }
-            pom.version = '0.0.9'
+            pom.version = '0.0.18'
             pom.artifactId = 'cfdi-model'
             pom.groupId = 'mx.gob.seseqro'
         }
@@ -68,7 +70,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'mx.gob.seseqro'
             artifactId 'cfdi-model'
-            version '0.0.9'
+            version '0.0.18'
 
             from components.java
         }

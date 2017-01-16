@@ -1,0 +1,67 @@
+{
+   "refID": "1234512",
+   "comprobante" : {
+      "version" : "3.2",
+      "serie" : "UME",
+      "fecha" : "2016-04-11T08:46:00",
+      "formaDePago" : "PAGO EN UNA SOLA EXHIBICION",
+      "subTotal" : 466.43,
+      "total" : 28220.93,
+      "tipoDeComprobante" : "ingreso",
+      "metodoDePago" : "Transferencia",
+      "LugarExpedicion" : "Queretaro,Qro.",
+      "motivoDescuento" : "Exento",
+      "Emisor" : {
+         "rfc" : "AAD990814BP7",
+         "nombre" : "SERVICIOS DE SALUD DEL ESTADO DE QUERETARO",
+         "DomicilioFiscal" : {
+            "calle" : "16 DE SEPTIEMBRE",
+            "noExterior" : "51 ORIENTE",
+            "colonia" : "CENTRO",
+            "municipio" : "QUERETARO",
+            "estado" : "QUERETARO",
+            "pais" : "México",
+            "codigoPostal" : "76000"
+         },
+         "RegimenFiscal" : [ {
+            "Regimen" : "Persona Moral"
+         } ]
+      },
+      "Receptor" : {
+         "rfc" : "IMS421231I45",
+         "nombre" : "INSTITUTO MEXICANO DEL SEGURO SOCIAL",
+         "Domicilio" : {
+            "calle" : "PASEO DE LA REFORMA",
+            "noExterior" : "476",
+            "colonia" : "JUAREZ",
+            "municipio" : "MEXICO",
+            "estado" : "Distrito Federal",
+            "pais" : "Mexico",
+            "codigoPostal" : "06600"
+         }
+      },
+      "Conceptos" : {
+         "Concepto" : [ {
+            "cantidad" : 53.00,
+            "unidad" : "-",
+            "descripcion" : "Biometría hem; com vsg reticulocitos y plaquet",
+            "valorUnitario" : 126.93,
+            "importe" : 6727.29
+         }, {
+            "cantidad" : 1.00,
+            "unidad" : "-",
+            "descripcion" : "PROTE�NAS C-REACTIVAS",
+            "valorUnitario" : 122.00,
+            "importe" : 122.00
+         }, {
+            "cantidad" : 47.00,
+            "unidad" : "-",
+            "descripcion" : "GLUCOSA",
+            "valorUnitario" : 50.00,
+            "importe" : 2350.00
+         } ]
+      },
+      "Impuestos" : {         
+      }
+   }
+}

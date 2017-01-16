@@ -2,22 +2,20 @@ package mx.bigdata.sat.cfdi;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -25,27 +23,48 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
-import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import mx.bigdata.sat.examples.ExampleCFDv32Factory;
+import mx.bigdata.sat.security.KeyLoaderEnumeration;
+import mx.bigdata.sat.security.factory.KeyLoaderFactory;
+import mx.com.teqsoftqro.sat.cfdi.CFD32Factory;
 import mx.com.teqsoftqro.sat.cfdi.CFDiFactory;
 import mx.com.teqsoftqro.sat.cfdi.CFDv32Factory;
+import mx.com.teqsoftqro.sat.cfdi.ObjectFactory;
 import mx.com.teqsoftqro.sat.common.ComprobanteBase;
 import mx.com.teqsoftqro.sat.common.DiscoveryFormatType;
-import mx.com.teqsoftqro.sat.common.DocumentType;
 import mx.com.teqsoftqro.stamp.model.CFDi;
 import mx.gob.sat.cfd._32.Comprobante;
 import mx.gob.sat.nomina12.Nomina;
+import mx.gob.seseqro.stamp.transformcfdi.CFDiToPdfConverter;
 
 public class Nomina12Test {
 
+	private static PrivateKey key;
+
+	  private static X509Certificate cert;
+	  
+	  @BeforeClass public static void loadKeys() throws Exception {
+
+	    key = KeyLoaderFactory.createInstance(
+	            KeyLoaderEnumeration.PRIVATE_KEY_LOADER,
+	            new FileInputStream("resources/certs/CSD01_AAA010101AAA.key"),
+	            "12345678a"
+	    ).getKey();
+
+	    cert = KeyLoaderFactory.createInstance(
+	            KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
+	            new FileInputStream("resources/certs/CSD01_AAA010101AAA.cer")
+	    ).getKey();
+
+	  }
+	
 	@Test @Ignore
 	public void test() throws Exception {
 		CFDv32 cfd = new CFDv32(new FileInputStream("resources/xml/nomina12.xml"));
@@ -104,7 +123,7 @@ public class Nomina12Test {
 		i = i + 1;
 	}
 	
-	@Test
+	@Test @Ignore
 	public void test2() throws FileNotFoundException, Exception {
 		CFDv32Factory cfd = new CFDv32Factory(new FileInputStream("resources/xml/nomina12Timbrada.xml"));
 		Comprobante c = cfd.doGetComprobante();
@@ -120,10 +139,35 @@ public class Nomina12Test {
 		fos.close();
 	}
 	
-	@Test 
+	@Test @Ignore
 	public void test3() throws FileNotFoundException, Exception {
-		CFDiFactory cfd = new CFDiFactory(new FileInputStream("resources/json/cfdi.json"), DiscoveryFormatType.JSON);
-		CFDi cfdi = cfd.getCfdi();
+		ObjectFactory cfd = new ObjectFactory(new FileInputStream("resources/xml/cfdi.xml"), DiscoveryFormatType.XML);
+		CFDi cfdi = (CFDi) cfd.getDocument();
+		
+		ObjectFactory objF = new ObjectFactory(cfdi, DiscoveryFormatType.XML);
+		objF.guardar(System.out);
+		
+		InputStream in = new FileInputStream("src/main/resources/genfoV3.2.xsl");
+		CFDiToPdfConverter cfdiPdf = new CFDiToPdfConverter();
+		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiForFinanzas(cfdi.getComprobante(), in);
+		fos.writeTo(new FileOutputStream("resources/pdf/example1.pdf"));
+		
+		assertNotNull(cfdi);
+	}
+	
+	@Test 
+	public void test4() throws FileNotFoundException, Exception {
+		ObjectFactory cfd = new ObjectFactory(new FileInputStream("resources/xml/cfdv32.xml"), DiscoveryFormatType.XML);
+		Comprobante cfdi = (Comprobante) cfd.getDocument();
+		
+		CFD32Factory objF = new CFD32Factory((Object)cfdi);
+		objF.sellar(key, cert);
+		objF.guardar(System.out);
+		
+		InputStream in = new FileInputStream("src/main/resources/genfoV3.2.xsl");
+		CFDiToPdfConverter cfdiPdf = new CFDiToPdfConverter();
+		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiForFinanzas(cfdi, in);
+		fos.writeTo(new FileOutputStream("resources/pdf/example1.pdf"));
 		
 		assertNotNull(cfdi);
 	}

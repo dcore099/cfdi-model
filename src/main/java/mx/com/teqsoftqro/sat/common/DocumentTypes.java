@@ -1,5 +1,6 @@
 package mx.com.teqsoftqro.sat.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -13,7 +14,7 @@ public class DocumentTypes {
 	private List<DocumentType> documentTypes;
 	
 	public DocumentTypes() {
-		
+		setDocumentTypes(new ArrayList<DocumentType>());
 	}
 	@XmlElement(name = "DocumentTypes")
 	public List<DocumentType> getDocumentTypes() {
