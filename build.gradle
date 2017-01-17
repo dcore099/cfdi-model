@@ -58,7 +58,7 @@ uploadArchives {
             repository(url: "http://10.22.1.1:8090/repository/internal/") {
             	authentication(userName: 'raulrt', password: 'Pas$word89')
             }
-            pom.version = '0.0.18'
+            pom.version = '0.0.20'
             pom.artifactId = 'cfdi-model'
             pom.groupId = 'mx.gob.seseqro'
         }
@@ -70,7 +70,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'mx.gob.seseqro'
             artifactId 'cfdi-model'
-            version '0.0.18'
+            version '0.0.20'
 
             from components.java
         }

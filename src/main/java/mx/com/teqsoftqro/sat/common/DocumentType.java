@@ -103,8 +103,8 @@ public class DocumentType {
 		   , mx.gob.sat.cfd.timbrefiscaldigital.TimbreFiscalDigital.class
 		   , "tfd"
 		   , "http://www.sat.gob.mx/TimbreFiscalDigital"
-		   , "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
-		   , "/*/TimbreFiscalDigital[@version='1.0']|/Nomina[@version='1.0']"
+		   , "http://www.sat.gob.mx/sitio_internet/timbrefiscaldigital/TimbreFiscalDigital.xsd"
+		   , "/*/TimbreFiscalDigital[@version='1.0']|/TimbreFiscalDigital[@version='1.0']|//*/TimbreFiscalDigital[@version='1.0']"
 		   , ""
 		   , "$..TimbreFiscalDigital[?(@.version=='1.0')]"
 		   , "");

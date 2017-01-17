@@ -149,7 +149,7 @@ public class Nomina12Test {
 		
 		InputStream in = new FileInputStream("src/main/resources/genfoV3.2.xsl");
 		CFDiToPdfConverter cfdiPdf = new CFDiToPdfConverter();
-		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiForFinanzas(cfdi.getComprobante(), in);
+		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiToPDF(cfdi.getComprobante(), in);
 		fos.writeTo(new FileOutputStream("resources/pdf/example1.pdf"));
 		
 		assertNotNull(cfdi);
@@ -157,7 +157,7 @@ public class Nomina12Test {
 	
 	@Test 
 	public void test4() throws FileNotFoundException, Exception {
-		ObjectFactory cfd = new ObjectFactory(new FileInputStream("resources/xml/cfdv32.xml"), DiscoveryFormatType.XML);
+		ObjectFactory cfd = new ObjectFactory(new FileInputStream("resources/xml/cfdi_timbre.xml"), DiscoveryFormatType.XML);
 		Comprobante cfdi = (Comprobante) cfd.getDocument();
 		
 		CFD32Factory objF = new CFD32Factory((Object)cfdi);
@@ -166,7 +166,7 @@ public class Nomina12Test {
 		
 		InputStream in = new FileInputStream("src/main/resources/genfoV3.2.xsl");
 		CFDiToPdfConverter cfdiPdf = new CFDiToPdfConverter();
-		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiForFinanzas(cfdi, in);
+		ByteArrayOutputStream fos = (ByteArrayOutputStream) cfdiPdf.processCFDiToPDF(cfdi, in);
 		fos.writeTo(new FileOutputStream("resources/pdf/example1.pdf"));
 		
 		assertNotNull(cfdi);

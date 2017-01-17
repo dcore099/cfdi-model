@@ -39,32 +39,9 @@ public class CFDiToPdfConverter {
 	
 	ExtracCfdiUtil extracCfdiUtil = new ExtracCfdiUtil();
 	
-	public OutputStream processCFDiForFinanzas(Object cfdi, InputStream xsltLocation) throws Exception {
+	public OutputStream processCFDiToPDF(Object cfdi, InputStream xsltLocation) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-		
-		boolean plantilla = false;	
-		String concatenaPlantilla="";
-		
-		ObjectFactory objF = new ObjectFactory(cfdi, DiscoveryFormatType.XML);
-		objF.guardar(baos2);
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos2.toByteArray());
-		
-		StreamSource cfdiSource = extracCfdiUtil.obtenerSource(bais);
-		
-		if(null!=cfdiSource){
-			ByteArrayOutputStream outResult = OldFopper.fopPDF(xsltLocation, null,cfdiSource, out, null);
-			return outResult;
-		}else{
-			return null;
-		}
-	}
-	
-	public OutputStream processCFDiForNomina(Object cfdi, InputStream xsltLocation) throws Exception {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-		boolean plantilla = false;	
-		String concatenaPlantilla="";
 		
 		ObjectFactory objF = new ObjectFactory(cfdi, DiscoveryFormatType.XML);
 		objF.guardar(baos2);
