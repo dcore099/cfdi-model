@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CFDi xsi:schemaLocation="  http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd http://www.sat.gob.mx/nomina12 http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/nomina12.xsd " xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-   <comprobante version="3.2" serie="NOM" folio="38028" fecha="2017-01-05T15:23:00" formaDePago="En una sola exhibiciÃƒÂ³n" subTotal="50000.00" descuento="1212.00" Moneda="MXN" total="48788.00" tipoDeComprobante="egreso" metodoDePago="NA" LugarExpedicion="66480">
-      <cfdi:Emisor rfc="ACO560518KW7" nombre="PRUEBA">
-         <cfdi:RegimenFiscal Regimen="601"/>
-      </cfdi:Emisor>
-      <cfdi:Receptor rfc="TUCA5703119R5" nombre="DEMO-NOMBRE"/>
-      <cfdi:Conceptos>
-         <cfdi:Concepto cantidad="1" unidad="ACT" descripcion="Pago de nómina" valorUnitario="50000.0000" importe="50000.00"/>
-      </cfdi:Conceptos>
-      <cfdi:Impuestos/>
-      <cfdi:Complemento>
-         <nomina12:Nomina Version="1.2" TipoNomina="E" FechaPago="2016-12-22" FechaInicialPago="2016-12-22" FechaFinalPago="2016-12-22" NumDiasPagados="1.000" TotalPercepciones="50000.00" TotalDeducciones="1212.00" xmlns:nomina12="http://www.sat.gob.mx/nomina12">
-            <nomina12:Emisor RegistroPatronal="BBBB020202BB0"/>
-            <nomina12:Receptor Curp="VAAI901027HNLRRS07" NumSeguridadSocial="43098825680" FechaInicioRelLaboral="2010-05-31" TipoContrato="01" TipoJornada="01" TipoRegimen="02" NumEmpleado="5300" Departamento="CONTABILIDAD" RiesgoPuesto="4" PeriodicidadPago="99" SalarioBaseCotApor="337.76" SalarioDiarioIntegrado="331.66" ClaveEntFed="NLE"/>
-            <nomina12:Percepciones TotalSeparacionIndemnizacion="50000.00" TotalGravado="6679.98" TotalExento="43320.02">
-               <nomina12:Percepcion TipoPercepcion="025" Clave="026" Concepto="INDEMNIZACIÓN" ImporteGravado="6679.98" ImporteExento="43320.02"/>
-               <nomina12:SeparacionIndemnizacion TotalPagado="50000.00" NumAñosServicio="0" UltimoSueldoMensOrd="10000.00" IngresoAcumulable="10000.00" IngresoNoAcumulable="40000.00"/>
-            </nomina12:Percepciones>
-            <nomina12:Deducciones TotalImpuestosRetenidos="1212.00">
-               <nomina12:Deduccion TipoDeduccion="002" Clave="049" Concepto="ISPT" Importe="1212.00"/>
-            </nomina12:Deducciones>
-         </nomina12:Nomina>
-      </cfdi:Complemento>
-   </comprobante>
-   <refID>214</refID>
-</CFDi>
+<cfdi:Comprobante xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd " xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.2" serie="RHN" folio="0003750" fecha="2017-01-16T15:36:14" formaDePago="Pago en una sola exhibicion" subTotal="1848.96" descuento="348.96" Moneda="MXN" total="1500" tipoDeComprobante="egreso" metodoDePago="NA" LugarExpedicion="76000">
+   <cfdi:Emisor rfc="AAA010101AAA" nombre="SERVICIOS DE SALUD DEL ESTADO DE QUERETARO">
+      <cfdi:RegimenFiscal Regimen="603"/>
+   </cfdi:Emisor>
+   <cfdi:Receptor rfc="TUCA2107035N9" nombre="LICEA HERNANDEZ MARIA GUADALUPE VERONICA               "/>
+   <cfdi:Conceptos>
+      <cfdi:Concepto cantidad="1" unidad="ACT" descripcion="Pago de nómina" valorUnitario="1848.96" importe="1848.96"/>
+   </cfdi:Conceptos>
+   <cfdi:Impuestos/>
+   <cfdi:Complemento />
+</cfdi:Comprobante>

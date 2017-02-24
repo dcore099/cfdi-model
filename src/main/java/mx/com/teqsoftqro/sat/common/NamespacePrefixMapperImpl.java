@@ -28,8 +28,7 @@ public final class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
     this.map = map;
   }
 
-  public String getPreferredPrefix(String namespaceUri, String suggestion, 
-                                   boolean requirePrefix) {
+  public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
     String value = map.get(namespaceUri);
     return (value != null) ? value : suggestion;
   }

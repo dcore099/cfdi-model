@@ -393,6 +393,12 @@ public class CFDi implements Serializable {
 	public void setCorreos(String correos) {
 		this.correos = correos;
 	}
+	public String getCentroCostos() {
+		return centroCostos;
+	}
+	public void setCentroCostos(String centroCostos) {
+		this.centroCostos = centroCostos;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		boolean equal = true;
@@ -648,13 +654,20 @@ public class CFDi implements Serializable {
 		
 		return true;
 	}
-	public String getCentroCostos() {
-		return centroCostos;
-	}
-	public void setCentroCostos(String centroCostos) {
-		this.centroCostos = centroCostos;
-	}
 	
+	public boolean equalId(CFDi cfdi) {
+		boolean equal = true;
+		
+		if (cfdi.getRefID() != null && this.getRefID() != null) {equal = this.getRefID().equals(cfdi.getRefID()); }
+		else if (cfdi.getRefID() == null && this.getRefID() != null) {return false;}
+		else if (cfdi.getRefID() != null && this.getRefID() == null) {return false;}
+		else if (cfdi.getRefID() == null && this.getRefID() == null) {equal = true;}
+		if (!equal) {
+			return false;
+		}
+		
+		return true;
+	}
 	
 	
 }

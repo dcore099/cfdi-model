@@ -58,8 +58,8 @@ import mx.com.teqsoftqro.sat.common.NamespacePrefixMapperImpl;
 import mx.com.teqsoftqro.sat.common.UrlPrefixes;
 import mx.com.teqsoftqro.stamp.model.CFDi;
 import mx.gob.sat.cfd._32.Comprobante;
-import mx.gob.sat.cfd.timbrefiscaldigital.TimbreFiscalDigital;
 import mx.gob.sat.nomina12.Nomina;
+import mx.gob.sat.timbrefiscaldigital.TimbreFiscalDigital;
 import net.minidev.json.JSONArray;
 
 public class CFDiFactory {

@@ -38,6 +38,7 @@ dependencies {
 	compile 'ca.juliusdavies:not-yet-commons-ssl:0.3.11'
 	compile 'org.bouncycastle:bcprov-ext-jdk15:1.45'
 	compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.1'
+	compile group: 'com.googlecode.jaxb-namespaceprefixmapper-interfaces', name: 'JAXBNamespacePrefixMapper', version: '2.2.4'
 	compile 'com.sun.xml.bind:jaxb-xjc:2.1.12'
 	compile 'com.sun.xml.bind:jaxb-impl:2.1.12'
 	compile 'com.jayway.jsonpath:json-path:2.1.0'
@@ -47,7 +48,7 @@ dependencies {
 
 	provided 'org.projectlombok:lombok:0.11.4'
 
-    testCompile 'junit:junit:4.8.1'
+    testCompile 'junit:junit:4.11'
     testCompile 'commons-io:commons-io:2.2'
    
 }
@@ -58,7 +59,7 @@ uploadArchives {
             repository(url: "http://10.22.1.1:8090/repository/internal/") {
             	authentication(userName: 'raulrt', password: 'Pas$word89')
             }
-            pom.version = '0.0.20'
+            pom.version = '0.0.25'
             pom.artifactId = 'cfdi-model'
             pom.groupId = 'mx.gob.seseqro'
         }
@@ -70,7 +71,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'mx.gob.seseqro'
             artifactId 'cfdi-model'
-            version '0.0.20'
+            version '0.0.25'
 
             from components.java
         }
@@ -99,7 +100,7 @@ task JaxbCFDiSchemas(type: Xsd2JavaTask) {
 						[ 'src/main/resources/xsd/v22/cfdv22.xsd', 'mx.gob.sat.cfd._22' ],
 						[ 'src/main/resources/xsd/v3/cfdv3.xsd', 'mx.gob.sat.cfd._3' ],
 						[ 'src/main/resources/xsd/v32/cfdv32.xsd', 'mx.gob.sat.cfd._32' ],
-						[ 'src/main/resources/xsd/v32/TimbreFiscalDigital.xsd', 'mx.gob.sat.cfd.timbrefiscaldigital' ],
+						[ 'src/main/resources/xsd/v32/TimbreFiscalDigital.xsd', 'mx.gob.sat.timbrefiscaldigital' ],
 						[ 'src/main/resources/xsd/common/donat/donat11.xsd', 'mx.gob.sat.donat'],
 						[ 'src/main/resources/xsd/common/ecb/ecb.xsd', 'mx.gob.sat.ecb'],
 						[ 'src/main/resources/xsd/common/ecc/ecc.xsd', 'mx.gob.sat.ecc'],
@@ -149,8 +150,8 @@ task CFDv32Test (type: Test, dependsOn: testClasses) {
 	debug true
 }
 
-task Nomina12Test (type: Test, dependsOn: testClasses) {
-	include '**/Nomina12Test*'
+task CFD32FactoryTest (type: Test, dependsOn: testClasses) {
+	include '**/CFD32FactoryTest*'
 	debug true
 }
 

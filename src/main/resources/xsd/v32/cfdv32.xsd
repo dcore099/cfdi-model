@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by SAT (SAT) -->
 <xs:schema xmlns:cfdi="http://www.sat.gob.mx/cfd/3" 
            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
            targetNamespace="http://www.sat.gob.mx/cfd/3" 
            elementFormDefault="qualified" 
            attributeFormDefault="unqualified"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
            xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/jaxb/bindingschema_2_0.xsd"
            jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.1">
            
   <xs:annotation>
     <xs:appinfo>
+      
       <jaxb:globalBindings>
         <xjc:serializable uid="-6026937020915831338" />
         <jaxb:javaType 
@@ -19,7 +21,6 @@
 			parseMethod="mx.bigdata.sat.schema.binder.DateTimeCustomBinder.parseDateTime"
 			printMethod="mx.bigdata.sat.schema.binder.DateTimeCustomBinder.printDateTime"
            />
-        <!-- <xjc:superInterface name="mx.bigdata.sat.cfdi.ComprobanteVersion" /> -->
       </jaxb:globalBindings>
     </xs:appinfo>
   </xs:annotation>

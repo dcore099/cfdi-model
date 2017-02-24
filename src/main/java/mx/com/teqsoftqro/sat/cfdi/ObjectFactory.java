@@ -22,8 +22,10 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,6 +37,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -58,6 +62,8 @@ import net.minidev.json.JSONArray;
 public class ObjectFactory {
 
 	private final Map<String, String> localPrefixes = Maps.newHashMap();
+	
+	private Logger logger = LoggerFactory.getLogger(ObjectFactory.class);
 	
 	private String schemaLocation;
 	protected DocumentTypes docTypes;
@@ -139,7 +145,7 @@ public class ObjectFactory {
 					docTypes.getDocumentTypes().add(docType);
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				logger.trace("Error", ex);
 			}
 		}
 		
@@ -219,7 +225,8 @@ public class ObjectFactory {
 	}
 	
 	public void guardar(OutputStream out) throws Exception {
-		Marshaller m = getContext(docTypes).createMarshaller();
+		JAXBContext context = getContext(docTypes);
+		Marshaller m = context.createMarshaller();
 		m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl(localPrefixes));
 		//m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemaLocation);
@@ -282,7 +289,9 @@ public class ObjectFactory {
 		while (itDocType.hasNext()) {
 			DocumentType docType = itDocType.next();
 			addNamespace(docType.getNamespace(), docType.getNamespacePrefix());
-			schemaLocation = schemaLocation + docType.getNamespace() + " " + docType.getSchemaLocation() + " ";
+			//if (!(docType.getClase() == DocumentType.TFD10.getClase())) {
+				schemaLocation = schemaLocation + docType.getNamespace() + " " + docType.getSchemaLocation() + " ";
+			//}
 		}
 	}
 

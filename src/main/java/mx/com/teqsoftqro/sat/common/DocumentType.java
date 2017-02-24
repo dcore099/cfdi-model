@@ -99,8 +99,8 @@ public class DocumentType {
 	public static final DocumentType TFD10 = new DocumentType(
 			 "TimbreFiscalDigital"
 		   , "1.0"
-		   , "mx.gob.sat.cfd.timbrefiscaldigital"
-		   , mx.gob.sat.cfd.timbrefiscaldigital.TimbreFiscalDigital.class
+		   , "mx.gob.sat.timbrefiscaldigital"
+		   , mx.gob.sat.timbrefiscaldigital.TimbreFiscalDigital.class
 		   , "tfd"
 		   , "http://www.sat.gob.mx/TimbreFiscalDigital"
 		   , "http://www.sat.gob.mx/sitio_internet/timbrefiscaldigital/TimbreFiscalDigital.xsd"

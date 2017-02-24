@@ -1,37 +1,17 @@
 package mx.gob.seseqro.stamp.transformcfdi;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.buzonfiscal.ns.addenda.bf._2.AddendaBuzonFiscal;
-
 import mx.com.teqsoftqro.sat.cfdi.ObjectFactory;
 import mx.com.teqsoftqro.sat.common.DiscoveryFormatType;
-import mx.com.teqsoftqro.stamp.model.CFDi;
-import mx.gob.sat.cfd._32.Comprobante;
-import mx.gob.sat.cfd.timbrefiscaldigital.TimbreFiscalDigital;
-import mx.gob.sat.nomina.Nomina;
 
 public class CFDiToPdfConverter {
 
@@ -57,6 +37,7 @@ public class CFDiToPdfConverter {
 		}
 	}
 	
+	/*
 	private static String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
@@ -85,5 +66,5 @@ public class CFDiToPdfConverter {
 		return sb.toString();
 
 	}
-	
+	*/
 }

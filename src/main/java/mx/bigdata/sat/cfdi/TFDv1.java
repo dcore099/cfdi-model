@@ -43,8 +43,8 @@ import javax.xml.validation.Validator;
 
 import mx.bigdata.sat.common.ComprobanteBase;
 import mx.bigdata.sat.common.NamespacePrefixMapperImpl;
-import mx.gob.sat.cfd.timbrefiscaldigital.ObjectFactory;
-import mx.gob.sat.cfd.timbrefiscaldigital.TimbreFiscalDigital;
+import mx.gob.sat.timbrefiscaldigital.ObjectFactory;
+import mx.gob.sat.timbrefiscaldigital.TimbreFiscalDigital;
 
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
