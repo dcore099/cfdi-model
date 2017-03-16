@@ -35,6 +35,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.buzonfiscal.ns.addenda.bf._2.AddendaBuzonFiscal;
+
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 import mx.com.teqsoftqro.sat.cfdi.CFD32Factory;
@@ -65,7 +67,7 @@ public class CFD32FactoryTest {
 
 	}
 	
-	@Test
+	@Test @Ignore
 	public void test00Cfdi() throws FileNotFoundException, Exception {
 		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/cfdi_sellado.xml"));
 		Comprobante cfdi = (Comprobante) cfd.getDocument();
@@ -73,7 +75,7 @@ public class CFD32FactoryTest {
 		assertEquals(cfdi.getComplemento().getAny().size(), 0);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void test05CfdiNomina12() throws FileNotFoundException, Exception {
 		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/cfdi_nomina12.xml"));
 		Comprobante cfdi = (Comprobante) cfd.getDocument();
@@ -82,7 +84,7 @@ public class CFD32FactoryTest {
 		assertEquals(cfdi.getComplemento().getAny().get(0).getClass(), Nomina.class);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void test10CfdiNomina12Timbre() throws FileNotFoundException, Exception {
 		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/cfdi_nomina12_timbre.xml"));
 		Comprobante cfdi = (Comprobante) cfd.getDocument();
@@ -95,7 +97,7 @@ public class CFD32FactoryTest {
 		}
 	}
 	
-	@Test
+	@Test @Ignore
 	public void test15SellarCfdi() throws FileNotFoundException, Exception {
 		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/cfdi_nomina12_timbre.xml"));
 		cfd.sellar(key, cert);
@@ -121,6 +123,40 @@ public class CFD32FactoryTest {
 		fos.writeTo(new FileOutputStream("resources/pdf/example1.pdf"));
 		
 		assertNotNull(cfdi);
+	}
+	
+	@Test
+	public void test5() throws FileNotFoundException, Exception {
+		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/cfdi_addenda.xml"));
+		Comprobante cfdi = (Comprobante) cfd.getDocument();
+		/////////////////
+		com.buzonfiscal.ns.addenda.bf._2.ObjectFactory objFactory = new com.buzonfiscal.ns.addenda.bf._2.ObjectFactory();
+		AddendaBuzonFiscal addenda = objFactory.createAddendaBuzonFiscal();
+		addenda.setCFD(objFactory.createCFD());
+		addenda.setReceptor(objFactory.createReceptor());
+		addenda.getCFD().setObservaciones("Observaciones__222");
+		addenda.getCFD().setTotalConLetra("Me Lleva");
+		addenda.getReceptor().setEmail("raul.ramtap@gmail.com");
+		mx.gob.sat.cfd._32.ObjectFactory cfdFactory = new mx.gob.sat.cfd._32.ObjectFactory();
+		cfdi.setAddenda(cfdFactory.createComprobanteAddenda());
+		cfdi.getAddenda().getAny().add(addenda);
+		/////////////////
+		assertNotNull(cfdi);
+		assertEquals(cfdi.getComplemento().getAny().size(), 1);
+		assertEquals(cfdi.getAddenda().getAny().size(), 1);
+		
+		
+		imprimeComprobante(cfdi);
+		
+	}
+	
+	@Test
+	public void test6() throws FileNotFoundException, Exception {
+		CFD32Factory cfd = new CFD32Factory(new FileInputStream("resources/xml/result.xml"));
+		Comprobante cfdi = (Comprobante) cfd.getDocument();
+		assertNotNull(cfdi);
+		assertEquals(cfdi.getComplemento().getAny().size(), 1);
+		assertEquals(cfdi.getAddenda().getAny().size(), 1);
 	}
 	
 	public void imprimeComprobante(Comprobante comp) throws Exception {
