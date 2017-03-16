@@ -132,6 +132,18 @@ public class DocumentType {
 		   , ""
 		   , ""
 		   , "");
+	public static final DocumentType ADDENDA_BF = new DocumentType(
+			 "AddendaBuzonFiscal"
+		   , "1.0"
+		   , "com.buzonfiscal.ns.addenda.bf._2"
+		   , com.buzonfiscal.ns.addenda.bf._2.AddendaBuzonFiscal.class
+		   , "bfd"
+		   , "http://www.buzonfiscal.com/ns/addenda/bf/2"
+		   , "http://www.buzonfiscal.com/schema/xsd/Addenda_BF_v20.xsd"
+		   , "/*/AddendaBuzonFiscal|/AddendaBuzonFiscal|//*/AddendaBuzonFiscal"
+		   , ""
+		   , "$..AddendaBuzonFiscal"
+		   , "");
 	
 	public static DocumentTypes docTypesRegistered() {
 		DocumentTypes docTypes = new DocumentTypes();
@@ -141,6 +153,7 @@ public class DocumentType {
 		docTypes.getDocumentTypes().add(DocumentType.NOMINA11);
 		docTypes.getDocumentTypes().add(DocumentType.NOMINA12);
 		docTypes.getDocumentTypes().add(DocumentType.TFD10);
+		docTypes.getDocumentTypes().add(DocumentType.ADDENDA_BF);
 		
 		return docTypes;
 	}

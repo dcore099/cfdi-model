@@ -126,6 +126,17 @@ public class ObjectFactory {
 						}
 					}
 				}
+				if (comp2.getAddenda().getAny().size() > 0) {
+					Iterator<Object> addendas = comp2.getAddenda().getAny().iterator();
+					while (addendas.hasNext()) {
+						Object addenda = addendas.next();
+						for (DocumentType dType : DocumentType.docTypesRegistered().getDocumentTypes()) {
+							if (addenda.getClass().getName().equals(dType.getClase().getName())) {
+								docTypes.getDocumentTypes().add(dType);
+							}
+						}
+					}
+				}
 			}
 		}
 		
