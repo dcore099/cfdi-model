@@ -115,7 +115,7 @@ public class ObjectFactory {
 			if (obj.getClass().getName().equals(DocumentType.CFDI32.getClase().getName())) {
 				docTypes.getDocumentTypes().add(DocumentType.CFDI32);
 				Comprobante comp2 = (Comprobante) obj;
-				if (comp2.getComplemento().getAny().size() > 0) {
+				if (comp2.getComplemento() != null && comp2.getComplemento().getAny().size() > 0) {
 					Iterator<Object> complementos = comp2.getComplemento().getAny().iterator();
 					while (complementos.hasNext()) {
 						Object complemento = complementos.next();
@@ -126,7 +126,7 @@ public class ObjectFactory {
 						}
 					}
 				}
-				if (comp2.getAddenda().getAny().size() > 0) {
+				if (comp2.getAddenda() != null && comp2.getAddenda().getAny().size() > 0) {
 					Iterator<Object> addendas = comp2.getAddenda().getAny().iterator();
 					while (addendas.hasNext()) {
 						Object addenda = addendas.next();
